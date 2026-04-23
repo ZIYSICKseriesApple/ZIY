@@ -52,24 +52,46 @@
             background-clip: text; -webkit-background-clip: text; color: transparent;
         }
         .nav-icons { display: flex; gap: 24px; align-items: center; position: relative; }
+        /* 导航图标 —— iOS 级丝滑交互 */
         .nav-icons i {
             font-size: 1.3rem; cursor: pointer; color: #1d1d1f;
-            transition: all 0.2s cubic-bezier(0.28, 0, 0.36, 1);
+            transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), color 0.2s ease, opacity 0.2s ease;
+            will-change: transform;
+            display: inline-block !important;
+            visibility: visible !important;
+            opacity: 1 !important;
+            z-index: 10;
+            position: relative;
         }
-        .nav-icons i:hover { color: #333; transform: scale(1.05); }
+        .nav-icons i:hover { color: #333; transform: scale(1.06); }
+        .nav-icons i:active { transform: scale(0.94); color: #0071e3; transition: transform 0.1s cubic-bezier(0.2, 0.9, 0.4, 1); }
+        #searchIcon, #userIconBtn {
+            display: inline-block !important;
+            visibility: visible !important;
+            opacity: 1 !important;
+            pointer-events: auto !important;
+            z-index: 20;
+        }
+        /* 菜单图标 —— 三条线动画 + 整体点击反馈 */
         .menu-icon {
             display: flex; flex-direction: column; justify-content: space-between;
             width: 24px; height: 18px; cursor: pointer; position: relative; z-index: 10;
+            transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+            will-change: transform;
         }
+        .menu-icon:hover { transform: scale(1.04); }
+        .menu-icon:active { transform: scale(0.92); transition: transform 0.1s cubic-bezier(0.2, 0.9, 0.4, 1); }
         .menu-icon span {
             display: block; width: 100%; height: 2px; background-color: #1d1d1f; border-radius: 2px;
             transition: transform 0.3s cubic-bezier(0.28, 0, 0.36, 1), opacity 0.2s cubic-bezier(0.28, 0, 0.36, 1), background-color 0.2s;
             transform-origin: center;
         }
         .menu-icon:hover span { background-color: #333; }
+        .menu-icon:active span { background-color: #0071e3; }
         .menu-icon.active span:nth-child(1) { transform: translateY(8px) rotate(45deg); }
         .menu-icon.active span:nth-child(2) { opacity: 0; transform: scaleX(0); }
         .menu-icon.active span:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
+        
         .search-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0,0,0,0.3); backdrop-filter: blur(8px); z-index: 998;
@@ -96,9 +118,10 @@
         .search-dropdown .close-search-full {
             position: absolute; top: 24px; right: 24px; font-size: 2rem;
             color: #1d1d1f; cursor: pointer; z-index: 1000;
-            transition: transform 0.2s ease;
+            transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
-        .search-dropdown .close-search-full:hover { transform: rotate(90deg); }
+        .search-dropdown .close-search-full:hover { transform: scale(1.1) rotate(90deg); }
+        .search-dropdown .close-search-full:active { transform: scale(0.9); }
         
         /* 搜索框区域 —— 全宽 */
         .search-header {
@@ -111,6 +134,10 @@
             background: rgba(255,255,255,0.5); backdrop-filter: blur(10px);
             border-radius: 40px; padding: 4px 16px;
             border: 1px solid rgba(0,0,0,0.08);
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+        .search-input-wrapper:focus-within {
+            border-color: #0071e3; box-shadow: 0 0 0 3px rgba(0,113,227,0.15);
         }
         .search-input-wrapper i { color: #86868b; font-size: 1rem; margin-right: 8px; }
         .search-input {
@@ -132,10 +159,12 @@
             text-transform: uppercase; letter-spacing: 0.5px; color: #86868b;
         }
         .search-result-item {
-            padding: 16px 0; cursor: pointer; transition: background 0.15s;
+            padding: 16px 0; cursor: pointer;
+            transition: background 0.15s, transform 0.2s cubic-bezier(0.2, 0.9, 0.4, 1);
             border-bottom: 1px solid rgba(0,0,0,0.05);
         }
-        .search-result-item:hover { background: rgba(0,0,0,0.02); }
+        .search-result-item:hover { background: rgba(0,0,0,0.02); transform: translateX(4px); }
+        .search-result-item:active { transform: scale(0.98); background: rgba(0,0,0,0.04); }
         .result-title {
             font-weight: 600; margin-bottom: 4px; color: #1d1d1f;
             font-size: 1.2rem; font-family: 'SF Pro Display', 'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Inter', sans-serif;
@@ -145,10 +174,11 @@
         .hot-tag {
             display: inline-block; padding: 8px 18px; background: rgba(0,0,0,0.05);
             border-radius: 30px; font-size: 0.95rem; margin: 4px 8px 4px 0;
-            cursor: pointer; transition: background 0.15s; color: #1d1d1f;
-            font-weight: 500;
+            cursor: pointer; transition: background 0.2s, transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+            color: #1d1d1f; font-weight: 500;
         }
-        .hot-tag:hover { background: rgba(0,0,0,0.1); }
+        .hot-tag:hover { background: rgba(0,0,0,0.1); transform: scale(1.05); }
+        .hot-tag:active { transform: scale(0.95); background: rgba(0,0,0,0.15); }
         
         .user-menu {
             position: absolute; top: 48px; right: 0; background: rgba(255,255,255,0.95); backdrop-filter: blur(40px);
@@ -157,8 +187,12 @@
             transform: scale(0.96) translateY(-8px); transition: opacity 0.3s cubic-bezier(0.28, 0, 0.36, 1), transform 0.3s cubic-bezier(0.28, 0, 0.36, 1), visibility 0.3s;
         }
         .user-menu.active { opacity: 1; visibility: visible; transform: scale(1) translateY(0); }
-        .user-menu a { display: block; padding: 12px 20px; color: #1d1d1f; text-decoration: none; font-size: 0.95rem; font-weight: 500; transition: background 0.2s; }
-        .user-menu a:hover { background: rgba(0,0,0,0.04); }
+        .user-menu a {
+            display: block; padding: 12px 20px; color: #1d1d1f; text-decoration: none; font-size: 0.95rem; font-weight: 500;
+            transition: background 0.2s, transform 0.2s cubic-bezier(0.2, 0.9, 0.4, 1);
+        }
+        .user-menu a:hover { background: rgba(0,0,0,0.04); transform: translateX(4px); }
+        .user-menu a:active { transform: scale(0.97); background: rgba(0,0,0,0.06); }
         
         /* 移动菜单 */
         .mobile-menu {
@@ -176,16 +210,19 @@
             display: block; font-size: 1.5rem; font-weight: 500; padding: 16px 0;
             color: #1d1d1f; text-decoration: none; border-bottom: 1px solid rgba(0,0,0,0.05);
             font-family: 'SF Pro Display', 'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Inter', sans-serif;
-            text-align: left;
-            width: 100%;
+            text-align: left; width: 100%;
+            transition: color 0.2s, transform 0.2s cubic-bezier(0.2, 0.9, 0.4, 1), padding-left 0.2s;
         }
+        .mobile-menu a:hover { color: #0071e3; padding-left: 8px; }
+        .mobile-menu a:active { transform: scale(0.98); }
         .mobile-menu a:last-child { border-bottom: none; }
         .close-menu {
             position: absolute; top: 24px; right: 24px; font-size: 2rem;
             cursor: pointer; color: #1d1d1f; z-index: 210;
-            transition: transform 0.2s ease;
+            transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
         .close-menu:hover { transform: rotate(90deg); }
+        .close-menu:active { transform: scale(0.9); }
         .menu-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.2); backdrop-filter: blur(4px);
             z-index: 199; opacity: 0; visibility: hidden; transition: opacity 0.3s, visibility 0.3s;
@@ -232,12 +269,15 @@
         .btn-group { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; margin-top: 16px; }
         .btn-primary, .btn-secondary {
             padding: 10px 24px; border-radius: 980px; font-weight: 600; font-size: 0.95rem;
-            transition: all 0.3s cubic-bezier(0.28, 0, 0.36, 1); cursor: pointer; border: none;
+            transition: all 0.25s cubic-bezier(0.2, 0.9, 0.4, 1); cursor: pointer; border: none;
+            will-change: transform;
         }
         .btn-primary { background-color: #0071e3; color: white; box-shadow: 0 2px 8px rgba(0,113,227,0.2); }
-        .btn-primary:hover { transform: scale(1.02); background-color: #0077ed; }
+        .btn-primary:hover { transform: scale(1.03); background-color: #0077ed; box-shadow: 0 4px 12px rgba(0,113,227,0.3); }
+        .btn-primary:active { transform: scale(0.97); background-color: #0066cc; box-shadow: 0 1px 4px rgba(0,113,227,0.2); transition: transform 0.1s; }
         .btn-secondary { background-color: rgba(232,232,237,0.8); color: #1d1d1f; }
-        .btn-secondary:hover { background-color: rgba(214,214,220,0.9); transform: scale(1.02); }
+        .btn-secondary:hover { transform: scale(1.03); background-color: rgba(214,214,220,0.9); }
+        .btn-secondary:active { transform: scale(0.97); background-color: rgba(200,200,206,0.95); transition: transform 0.1s; }
         .module-visual {
             border-radius: 36px; overflow: hidden; margin: 28px 0 36px;
             box-shadow: 0 20px 40px -12px rgba(0,0,0,0.12); transition: transform 0.4s cubic-bezier(0.28, 0, 0.36, 1);
@@ -266,15 +306,21 @@
         .community-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 24px; margin: 28px 0; text-align: left; }
         .article-card {
             background: rgba(255,255,255,0.9); backdrop-filter: blur(20px); border-radius: 32px; padding: 20px;
-            transition: all 0.35s cubic-bezier(0.28, 0, 0.36, 1); cursor: pointer; border: 1px solid rgba(255,255,255,0.3);
+            transition: all 0.35s cubic-bezier(0.2, 0.9, 0.4, 1); cursor: pointer; border: 1px solid rgba(255,255,255,0.3);
         }
-        .article-card:hover { transform: translateY(-5px); box-shadow: 0 20px 35px -12px rgba(0,0,0,0.15); background: white; }
+        .article-card:hover { transform: translateY(-6px) scale(1.01); box-shadow: 0 20px 35px -12px rgba(0,0,0,0.15); background: white; }
+        .article-card:active { transform: translateY(-2px) scale(0.99); transition: transform 0.1s; }
         .article-meta { font-size: 0.7rem; color: #86868b; display: flex; gap: 10px; margin-bottom: 8px; }
         .article-title { font-weight: 600; font-size: 1.2rem; margin: 8px 0; }
         .article-content { font-size: 0.75rem; color: #3a3a3e; line-height: 1.4; max-height: 90px; overflow: hidden; }
         .media-preview { display: flex; gap: 8px; flex-wrap: wrap; margin: 12px 0; }
         .media-preview img, .media-preview video { max-width: 70px; border-radius: 14px; }
-        .comment-badge { margin-top: 12px; font-size: 0.7rem; color: #6e6e73; cursor: pointer; }
+        .comment-badge {
+            margin-top: 12px; font-size: 0.7rem; color: #6e6e73; cursor: pointer;
+            transition: color 0.2s, transform 0.2s cubic-bezier(0.2, 0.9, 0.4, 1);
+        }
+        .comment-badge:hover { color: #0071e3; transform: scale(1.05); }
+        .comment-badge:active { transform: scale(0.95); }
         .footer {
             background: rgba(245,245,247,0.8); backdrop-filter: blur(30px); margin-top: 60px;
             padding: 36px 0 28px; border-top: 1px solid rgba(0,0,0,0.05); position: relative;
@@ -283,10 +329,15 @@
         .footer-links { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 24px; margin-bottom: 24px; text-align: left; }
         .footer-col { flex: 1; min-width: 120px; }
         .footer-col h4 { font-weight: 600; margin-bottom: 10px; font-size: 0.75rem; }
-        .footer-col a { display: block; color: #6e6e73; text-decoration: none; margin-bottom: 6px; font-size: 0.7rem; cursor: pointer; }
+        .footer-col a {
+            display: block; color: #6e6e73; text-decoration: none; margin-bottom: 6px; font-size: 0.7rem; cursor: pointer;
+            transition: color 0.2s, transform 0.2s cubic-bezier(0.2, 0.9, 0.4, 1);
+        }
+        .footer-col a:hover { color: #0071e3; transform: translateX(4px); }
+        .footer-col a:active { transform: scale(0.97); }
         .copyright { border-top: 1px solid rgba(0,0,0,0.05); padding-top: 20px; font-size: 0.65rem; text-align: center; }
         
-        /* 语言切换样式更新：中文按钮 + 下拉菜单 */
+        /* 语言切换样式：中文按钮 + 向上弹出的下拉菜单 */
         .lang-switch {
             position: absolute; top: 20px; right: 24px; z-index: 300;
         }
@@ -296,27 +347,32 @@
             padding: 6px 12px; border-radius: 30px;
             background: rgba(255,255,255,0.4); backdrop-filter: blur(10px);
             border: 0.5px solid rgba(0,0,0,0.05);
+            transition: background 0.2s, transform 0.2s cubic-bezier(0.2, 0.9, 0.4, 1);
         }
         .lang-current i { font-size: 0.7rem; transition: transform 0.2s; }
         .lang-current.active i { transform: rotate(180deg); }
+        .lang-current:hover { background: rgba(255,255,255,0.6); }
+        .lang-current:active { transform: scale(0.96); }
         .lang-dropdown {
-            position: absolute; top: 42px; right: 0; background: rgba(255,255,255,0.95);
+            position: absolute; bottom: 100%; right: 0; background: rgba(255,255,255,0.95);
             backdrop-filter: blur(40px); border-radius: 24px; padding: 8px 0;
-            min-width: 130px; box-shadow: 0 8px 20px rgba(0,0,0,0.1), 0 0 0 1px rgba(0,0,0,0.02);
-            opacity: 0; visibility: hidden; transform: translateY(-8px);
+            min-width: 150px; box-shadow: 0 8px 20px rgba(0,0,0,0.1), 0 0 0 1px rgba(0,0,0,0.02);
+            opacity: 0; visibility: hidden; transform: translateY(8px);
             transition: opacity 0.2s, transform 0.2s, visibility 0.2s;
+            margin-bottom: 8px;
+            max-height: 400px; overflow-y: auto;
         }
         .lang-dropdown.active {
             opacity: 1; visibility: visible; transform: translateY(0);
         }
         .lang-dropdown span {
             display: block; padding: 10px 20px; cursor: pointer; color: #1d1d1f;
-            font-size: 0.85rem; transition: background 0.15s;
+            font-size: 0.85rem; transition: background 0.15s, transform 0.2s cubic-bezier(0.2, 0.9, 0.4, 1);
         }
-        .lang-dropdown span:hover { background: rgba(0,0,0,0.04); }
+        .lang-dropdown span:hover { background: rgba(0,0,0,0.04); transform: translateX(4px); }
+        .lang-dropdown span:active { transform: scale(0.97); background: rgba(0,0,0,0.06); }
         .lang-dropdown span.active { color: #0071e3; font-weight: 600; }
         
-        /* 深色模式适配语言切换 */
         @media (prefers-color-scheme: dark) {
             .lang-current { color: #f5f5f7; background: rgba(60,60,67,0.5); border-color: rgba(255,255,255,0.1); }
             .lang-dropdown { background: rgba(30,30,32,0.95); box-shadow: 0 8px 20px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.1); }
@@ -356,12 +412,17 @@
         }
         #globalModal .modal-card .close-modal {
             position: absolute; top: 24px; right: 24px; font-size: 1.4rem; cursor: pointer; color: #8e8e93;
+            transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), color 0.2s;
         }
+        #globalModal .modal-card .close-modal:hover { transform: scale(1.1); color: #1d1d1f; }
+        #globalModal .modal-card .close-modal:active { transform: scale(0.9); }
         #globalModal .action-button {
             width: 100%; padding: 14px; border-radius: 14px; font-weight: 600; font-size: 1rem;
-            background: #0071e3; color: white; border: none; cursor: pointer; transition: all 0.2s;
+            background: #0071e3; color: white; border: none; cursor: pointer;
+            transition: all 0.25s cubic-bezier(0.2, 0.9, 0.4, 1);
         }
-        #globalModal .action-button:hover { background: #0077ed; }
+        #globalModal .action-button:hover { background: #0077ed; transform: scale(1.02); box-shadow: 0 4px 12px rgba(0,113,227,0.3); }
+        #globalModal .action-button:active { transform: scale(0.98); background: #0066cc; box-shadow: 0 1px 4px rgba(0,113,227,0.2); }
         .account-header { display: flex; align-items: center; padding: 24px 24px 16px; border-bottom: 1px solid rgba(0,0,0,0.05); }
         .account-avatar { width: 60px; height: 60px; border-radius: 50%; background: #e8e8ed; margin-right: 16px; flex-shrink: 0; overflow: hidden; display: flex; align-items: center; justify-content: center; }
         .account-avatar img { width: 100%; height: 100%; object-fit: cover; }
@@ -376,16 +437,29 @@
         .list-item .value { color: #6e6e73; font-size: 0.9rem; }
         .input-field {
             width: 100%; padding: 12px 16px; border-radius: 12px; border: 1px solid rgba(0,0,0,0.08);
-            background: #f9f9fb; font-size: 0.95rem; margin-bottom: 16px; transition: all 0.2s; color: #1d1d1f;
+            background: #f9f9fb; font-size: 0.95rem; margin-bottom: 16px;
+            transition: all 0.2s cubic-bezier(0.2, 0.9, 0.4, 1); color: #1d1d1f;
         }
-        .input-field:focus { outline: none; border-color: #0071e3; box-shadow: 0 0 0 3px rgba(0,113,227,0.1); background: #fff; }
+        .input-field:focus { outline: none; border-color: #0071e3; box-shadow: 0 0 0 3px rgba(0,113,227,0.1); background: #fff; transform: scale(1.01); }
         .action-button {
             width: 100%; padding: 14px; border-radius: 14px; font-weight: 600; font-size: 1rem;
-            background: #0071e3; color: white; border: none; cursor: pointer; margin-top: 8px; transition: all 0.2s;
+            background: #0071e3; color: white; border: none; cursor: pointer; margin-top: 8px;
+            transition: all 0.25s cubic-bezier(0.2, 0.9, 0.4, 1);
         }
-        .action-button:hover { background: #0077ed; }
-        .link-button { color: #0071e3; font-weight: 500; text-decoration: none; cursor: pointer; }
-        .close-modal { position: absolute; top: 20px; right: 20px; cursor: pointer; font-size: 1.2rem; color: #8e8e93; }
+        .action-button:hover { background: #0077ed; transform: scale(1.02); box-shadow: 0 4px 12px rgba(0,113,227,0.3); }
+        .action-button:active { transform: scale(0.98); background: #0066cc; box-shadow: 0 1px 4px rgba(0,113,227,0.2); }
+        .link-button {
+            color: #0071e3; font-weight: 500; text-decoration: none; cursor: pointer;
+            transition: opacity 0.2s, transform 0.2s cubic-bezier(0.2, 0.9, 0.4, 1);
+        }
+        .link-button:hover { opacity: 0.8; transform: scale(1.05); }
+        .link-button:active { transform: scale(0.95); }
+        .close-modal {
+            position: absolute; top: 20px; right: 20px; cursor: pointer; font-size: 1.2rem; color: #8e8e93;
+            transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), color 0.2s;
+        }
+        .close-modal:hover { transform: scale(1.2); color: #1d1d1f; }
+        .close-modal:active { transform: scale(0.9); }
         .action-sheet {
             position: fixed; bottom: 0; left: 0; width: 100%; background: rgba(255,255,255,0.96); backdrop-filter: blur(40px);
             border-radius: 28px 28px 0 0; padding: 20px; z-index: 1100; transform: translateY(100%);
@@ -393,8 +467,12 @@
         }
         .action-sheet.show { transform: translateY(0); }
         .action-sheet .title { font-size: 1.1rem; font-weight: 600; text-align: center; padding: 8px 0; border-bottom: 1px solid rgba(0,0,0,0.1); margin-bottom: 12px; }
-        .action-sheet .option { padding: 14px; text-align: center; cursor: pointer; border-radius: 14px; }
-        .action-sheet .option:hover { background: rgba(0,0,0,0.05); }
+        .action-sheet .option {
+            padding: 14px; text-align: center; cursor: pointer; border-radius: 14px;
+            transition: background 0.2s, transform 0.2s cubic-bezier(0.2, 0.9, 0.4, 1);
+        }
+        .action-sheet .option:hover { background: rgba(0,0,0,0.05); transform: scale(1.02); }
+        .action-sheet .option:active { transform: scale(0.98); background: rgba(0,0,0,0.08); }
         .action-sheet .cancel { margin-top: 8px; color: #0071e3; font-weight: 600; }
         .action-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.3);
@@ -456,9 +534,10 @@
             background: rgba(255,255,255,0.5); backdrop-filter: blur(10px);
             border-radius: 28px; padding: 24px;
             border: 1px solid rgba(0,0,0,0.04);
-            transition: transform 0.2s ease;
+            transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.2s;
         }
-        #aboutModal .about-card:hover { transform: scale(1.02); }
+        #aboutModal .about-card:hover { transform: scale(1.02); box-shadow: 0 15px 30px rgba(0,0,0,0.1); }
+        #aboutModal .about-card:active { transform: scale(0.98); }
         #aboutModal .about-card .card-icon {
             font-size: 2rem; color: #0071e3; margin-bottom: 16px;
         }
@@ -504,8 +583,78 @@
             margin-top: 32px;
         }
 
-        /* 深色模式关于/法律界面适配 */
+        /* 深色模式全面修复 —— 其他绝对不变 */
         @media (prefers-color-scheme: dark) {
+            body { background: #000000; color: #f5f5f7; }
+            .navbar { background: rgba(20, 20, 20, 0.5); border-bottom-color: rgba(255, 255, 255, 0.1); }
+            .logo { background: linear-gradient(135deg, #f5f5f7 0%, #a1a1a6 100%); background-clip: text; -webkit-background-clip: text; }
+            .nav-icons i, .menu-icon span, .close-menu { color: #f5f5f7; }
+            .nav-icons i:hover { color: #fff; }
+            .nav-icons i:active { color: #0077ed; }
+            .menu-icon:hover span { background-color: #fff; }
+            .menu-icon:active span { background-color: #0077ed; }
+            
+            /* 全屏搜索 */
+            .search-dropdown { background: rgba(20, 20, 22, 0.95); border-bottom-color: rgba(255,255,255,0.1); }
+            .search-dropdown .close-search-full { color: #f5f5f7; }
+            .search-header { border-bottom-color: rgba(255,255,255,0.15); }
+            .search-input-wrapper { background: rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.15); }
+            .search-input, .result-title, .hot-tag { color: #f5f5f7; }
+            .search-input::placeholder, .search-section-title, .result-meta { color: #98989e; }
+            .search-result-item { border-bottom-color: rgba(255,255,255,0.1); }
+            .search-result-item:hover { background: rgba(255,255,255,0.05); }
+            .hot-tag { background: rgba(255,255,255,0.1); }
+            .hot-tag:hover { background: rgba(255,255,255,0.2); }
+            
+            /* 移动菜单 */
+            .mobile-menu { background: rgba(20, 20, 22, 0.95); border-bottom-color: rgba(255,255,255,0.1); }
+            .mobile-menu a { color: #f5f5f7; border-bottom-color: rgba(255,255,255,0.1); }
+            .close-menu { color: #f5f5f7; }
+            
+            /* 用户菜单 */
+            .user-menu { background: rgba(30, 30, 32, 0.95); box-shadow: 0 12px 30px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.1); }
+            .user-menu a { color: #f5f5f7; }
+            .user-menu a:hover { background: rgba(255,255,255,0.08); }
+            
+            /* 模块 */
+            .module-light { background: rgba(30, 30, 32, 0.9); color: #f5f5f7; }
+            .module-dark { background: rgba(0,0,0,0.95); }
+            .module-dark .module-sub { color: #e0e0e6; }
+            .btn-secondary { background-color: rgba(60, 60, 67, 0.8); color: #f5f5f7; }
+            .btn-secondary:hover { background-color: rgba(80, 80, 87, 0.9); }
+            
+            /* 社区 */
+            .community-preview, .article-card { background: rgba(30, 30, 32, 0.9); }
+            .article-card:hover { background: #1c1c1e; }
+            .article-meta, .comment-badge { color: #98989e; }
+            .article-title, .article-content { color: #f5f5f7; }
+            
+            /* 页脚 */
+            .footer { background: rgba(20, 20, 22, 0.8); border-top-color: rgba(255,255,255,0.1); }
+            .footer-col a, .copyright { color: #98989e; }
+            
+            /* 模态框通用 */
+            .modal-card { background: #1c1c1e; box-shadow: 0 20px 40px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.1); }
+            .account-header, .account-section { border-bottom-color: rgba(255,255,255,0.1); }
+            .account-info h3, .list-item .label { color: #f5f5f7; }
+            .account-info p, .section-title, .list-item .value { color: #98989e; }
+            .input-field { background: #2c2c2e; border-color: rgba(255,255,255,0.1); color: #f5f5f7; }
+            .input-field:focus { background: #1c1c1e; }
+            .account-avatar { background: #2c2c2e; }
+            .action-sheet { background: rgba(30, 30, 32, 0.96); }
+            .action-sheet .title, .action-sheet .option { color: #f5f5f7; border-bottom-color: rgba(255,255,255,0.1); }
+            .action-sheet .option:hover { background: rgba(255,255,255,0.08); }
+            .toast-message { background: rgba(60, 60, 67, 0.9); }
+            
+            /* 图表与画布 */
+            .chart-container { background: rgba(30, 30, 32, 0.9); }
+            .history-grid-canvas { background: #1c1c1e; }
+            
+            /* 遮罩层 */
+            .menu-overlay { background: rgba(0,0,0,0.5); }
+            .search-overlay { background: rgba(0,0,0,0.5); }
+            
+            /* 关于与法律模态框 */
             #aboutModal .modal-card {
                 background: rgba(30, 30, 32, 0.9);
                 box-shadow: 0 30px 60px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.1);
@@ -532,6 +681,15 @@
             }
             #legalModal .legal-updated { color: #98989e; }
             #legalModal .legal-content { color: #f5f5f7; }
+            #legalModal .action-button { background: #0077ed; }
+            
+            /* 全局弹窗 */
+            #globalModal .modal-card {
+                background: rgba(30,30,32,0.95);
+                box-shadow: 0 30px 50px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.1);
+            }
+            #globalModal .modal-card p { color: #f5f5f7; }
+            #globalModal .close-modal { color: #98989e; }
         }
 
         @media (max-width: 768px) {
@@ -713,17 +871,29 @@ R3440 R5055 R6030 R6440</pre>
 
 <footer class="footer">
     <div class="footer-inner">
-        <!-- 语言切换：中文按钮 + 下拉菜单（包含中文、英文、日文、韩文） -->
+        <!-- 语言切换：中文按钮 + 下拉菜单（包含多个语种，向上弹出） -->
         <div class="lang-switch">
             <div class="lang-current" id="langToggleBtn">
                 <span id="langCurrentText">中文</span>
                 <i class="fas fa-chevron-down"></i>
             </div>
             <div class="lang-dropdown" id="langDropdown">
-                <span data-lang="zh">中文</span>
+                <span data-lang="zh">简体中文</span>
+                <span data-lang="zh-TW">繁體中文</span>
                 <span data-lang="en">English</span>
                 <span data-lang="ja">日本語</span>
                 <span data-lang="ko">한국어</span>
+                <span data-lang="es">Español</span>
+                <span data-lang="fr">Français</span>
+                <span data-lang="pt">Português</span>
+                <span data-lang="ar">العربية</span>
+                <span data-lang="de">Deutsch</span>
+                <span data-lang="ru">Русский</span>
+                <span data-lang="it">Italiano</span>
+                <span data-lang="tr">Türkçe</span>
+                <span data-lang="vi">Tiếng Việt</span>
+                <span data-lang="th">ภาษาไทย</span>
+                <span data-lang="id">Bahasa Indonesia</span>
             </div>
         </div>
         <div class="footer-links animate-group">
@@ -838,7 +1008,6 @@ R3440 R5055 R6030 R6440</pre>
         function getUserProfile(un){ const p=localStorage.getItem(`profile_${un}`); return p?JSON.parse(p):{ avatar:'', bg:'', bio:'' }; }
         function saveUserProfile(un,data){ localStorage.setItem(`profile_${un}`,JSON.stringify(data)); }
 
-        // 获取当前语言
         function getCurrentLanguage(){
             const active = document.querySelector('#langDropdown span.active');
             return active ? active.dataset.lang : 'zh';
@@ -847,7 +1016,12 @@ R3440 R5055 R6030 R6440</pre>
         function renderPosts(){
             const c=document.getElementById('postsContainer'); if(!c) return;
             const lang = getCurrentLanguage();
-            const emptyMsg = { zh:'暂无文章 ✨', en:'No articles yet ✨', ja:'まだ記事がありません ✨', ko:'아직 게시글이 없습니다 ✨' };
+            const emptyMsg = { 
+                zh:'暂无文章 ✨', 'zh-TW':'暫無文章 ✨', en:'No articles yet ✨', ja:'まだ記事がありません ✨', ko:'아직 게시글이 없습니다 ✨',
+                es:'Aún no hay artículos ✨', fr:'Aucun article pour le moment ✨', pt:'Nenhum artigo ainda ✨', ar:'لا توجد مقالات بعد ✨',
+                de:'Noch keine Artikel ✨', ru:'Статей пока нет ✨', it:'Nessun articolo ancora ✨', tr:'Henüz makale yok ✨',
+                vi:'Chưa có bài viết nào ✨', th:'ยังไม่มีบทความ ✨', id:'Belum ada artikel ✨'
+            };
             if(posts.length===0){ 
                 c.innerHTML = `<div style="text-align:center; padding:40px;">${emptyMsg[lang] || emptyMsg.en}</div>`; 
                 return; 
@@ -867,7 +1041,12 @@ R3440 R5055 R6030 R6440</pre>
         function showPostDetail(post){
             const modal=document.getElementById('globalModal'); 
             const lang = getCurrentLanguage();
-            const titleText = { zh:'文章详情', en:'Post Details', ja:'記事詳細', ko:'게시글 상세' };
+            const titleText = { 
+                zh:'文章详情', 'zh-TW':'文章詳情', en:'Post Details', ja:'記事詳細', ko:'게시글 상세',
+                es:'Detalles del artículo', fr:'Détails de l\'article', pt:'Detalhes do artigo', ar:'تفاصيل المقال',
+                de:'Beitragsdetails', ru:'Детали статьи', it:'Dettagli articolo', tr:'Makale Detayları',
+                vi:'Chi tiết bài viết', th:'รายละเอียดบทความ', id:'Detail Artikel'
+            };
             document.getElementById('modalTitle').innerText = titleText[lang] || titleText.en;
             let media=''; if(post.images?.length) media+=`<div>${post.images.map(img=>`<img src="${img}" style="max-width:150px; border-radius:16px;">`).join('')}</div>`;
             if(post.videos?.length) media+=`<div>${post.videos.map(v=>`<video src="${v}" controls style="max-width:100%;"></video>`).join('')}</div>`;
@@ -879,7 +1058,12 @@ R3440 R5055 R6030 R6440</pre>
             const p=posts.find(p=>p.id===pid); if(!p) return; currentPostForComment=p;
             const div=document.getElementById('commentList');
             const lang = getCurrentLanguage();
-            const emptyText = { zh:'暂无评论', en:'No comments yet', ja:'コメントなし', ko:'댓글 없음' };
+            const emptyText = { 
+                zh:'暂无评论', 'zh-TW':'暫無評論', en:'No comments yet', ja:'コメントなし', ko:'댓글 없음',
+                es:'Sin comentarios', fr:'Aucun commentaire', pt:'Sem comentários', ar:'لا توجد تعليقات',
+                de:'Noch keine Kommentare', ru:'Пока нет комментариев', it:'Ancora nessun commento', tr:'Henüz yorum yok',
+                vi:'Chưa có bình luận', th:'ยังไม่มีความคิดเห็น', id:'Belum ada komentar'
+            };
             div.innerHTML=(p.comments||[]).map(c=>`<div><b>${escapeHtml(c.author)}</b> <span style="font-size:12px;">${new Date(c.time).toLocaleString()}</span><br>${escapeHtml(c.text)}</div>`).join('')|| (emptyText[lang] || emptyText.en);
             document.getElementById('commentModal').classList.add('show'); updateMenuIconState();
         }
@@ -961,9 +1145,21 @@ R3440 R5055 R6030 R6440</pre>
             const lang = getCurrentLanguage();
             const labels = {
                 zh: { hotRecommend: '热门推荐', hotTags: '热门标签', searchResults: '搜索结果', noResults: '没有找到相关文章' },
+                'zh-TW': { hotRecommend: '熱門推薦', hotTags: '熱門標籤', searchResults: '搜尋結果', noResults: '沒有找到相關文章' },
                 en: { hotRecommend: 'Hot Recommendations', hotTags: 'Hot Tags', searchResults: 'Search Results', noResults: 'No results found' },
                 ja: { hotRecommend: 'おすすめ', hotTags: '人気タグ', searchResults: '検索結果', noResults: '記事が見つかりません' },
-                ko: { hotRecommend: '추천', hotTags: '인기 태그', searchResults: '검색 결과', noResults: '게시글을 찾을 수 없습니다' }
+                ko: { hotRecommend: '추천', hotTags: '인기 태그', searchResults: '검색 결과', noResults: '게시글을 찾을 수 없습니다' },
+                es: { hotRecommend: 'Recomendaciones', hotTags: 'Etiquetas populares', searchResults: 'Resultados', noResults: 'No se encontraron artículos' },
+                fr: { hotRecommend: 'Recommandations', hotTags: 'Tags populaires', searchResults: 'Résultats', noResults: 'Aucun article trouvé' },
+                pt: { hotRecommend: 'Recomendados', hotTags: 'Tags populares', searchResults: 'Resultados', noResults: 'Nenhum artigo encontrado' },
+                ar: { hotRecommend: 'موصى به', hotTags: 'وسوم شائعة', searchResults: 'نتائج البحث', noResults: 'لم يتم العثور على مقالات' },
+                de: { hotRecommend: 'Empfehlungen', hotTags: 'Beliebte Tags', searchResults: 'Suchergebnisse', noResults: 'Keine Artikel gefunden' },
+                ru: { hotRecommend: 'Рекомендации', hotTags: 'Популярные теги', searchResults: 'Результаты поиска', noResults: 'Статьи не найдены' },
+                it: { hotRecommend: 'Consigliati', hotTags: 'Tag popolari', searchResults: 'Risultati', noResults: 'Nessun articolo trovato' },
+                tr: { hotRecommend: 'Önerilenler', hotTags: 'Popüler Etiketler', searchResults: 'Arama Sonuçları', noResults: 'Makale bulunamadı' },
+                vi: { hotRecommend: 'Đề xuất', hotTags: 'Thẻ phổ biến', searchResults: 'Kết quả tìm kiếm', noResults: 'Không tìm thấy bài viết' },
+                th: { hotRecommend: 'แนะนำ', hotTags: 'แท็กยอดนิยม', searchResults: 'ผลการค้นหา', noResults: 'ไม่พบบทความ' },
+                id: { hotRecommend: 'Rekomendasi', hotTags: 'Tag Populer', searchResults: 'Hasil Pencarian', noResults: 'Artikel tidak ditemukan' }
             };
             const t = labels[lang] || labels.en;
             searchResultsDiv.innerHTML = `
@@ -1003,7 +1199,14 @@ R3440 R5055 R6030 R6440</pre>
             if(kw.length===0){ renderDefaultSearchContent(); return; }
             const results=posts.filter(p=>p.title.toLowerCase().includes(kw)||p.content.toLowerCase().includes(kw));
             let html='';
-            const labels = { zh:['搜索结果','没有找到相关文章'], en:['Search Results','No results found'], ja:['検索結果','記事が見つかりません'], ko:['검색 결과','게시글을 찾을 수 없습니다'] };
+            const labels = { 
+                zh:['搜索结果','没有找到相关文章'], 'zh-TW':['搜尋結果','沒有找到相關文章'],
+                en:['Search Results','No results found'], ja:['検索結果','記事が見つかりません'], ko:['검색 결과','게시글을 찾을 수 없습니다'],
+                es:['Resultados','No se encontraron artículos'], fr:['Résultats','Aucun article trouvé'], pt:['Resultados','Nenhum artigo encontrado'],
+                ar:['نتائج البحث','لم يتم العثور على مقالات'], de:['Suchergebnisse','Keine Artikel gefunden'], ru:['Результаты поиска','Статьи не найдены'],
+                it:['Risultati','Nessun articolo trovato'], tr:['Arama Sonuçları','Makale bulunamadı'], vi:['Kết quả tìm kiếm','Không tìm thấy bài viết'],
+                th:['ผลการค้นหา','ไม่พบบทความ'], id:['Hasil Pencarian','Artikel tidak ditemukan']
+            };
             const [resTitle, noRes] = labels[lang] || labels.en;
             if(results.length===0) html=`<div class="search-section-title">${resTitle}</div><div style="padding:20px; text-align:center; color:#86868b;">${noRes}</div>`;
             else { html=`<div class="search-section-title">${resTitle}</div>`; results.forEach(p=>{ html+=`<div class="search-result-item" data-post-id="${p.id}"><div class="result-title">${escapeHtml(p.title)}</div><div class="result-meta">${escapeHtml(p.author)} · ${new Date(p.createdAt).toLocaleDateString()}</div></div>`; }); }
@@ -1018,7 +1221,6 @@ R3440 R5055 R6030 R6440</pre>
         menuOverlayDiv?.addEventListener('click', closeMobileMenu);
         mobileMenuDiv.addEventListener('click', (e) => { if(e.target === mobileMenuDiv) closeMobileMenu(); });
 
-        // 移动菜单点击跳转
         document.querySelectorAll('.mobile-menu a[data-target]').forEach(link => {
             link.addEventListener('click', (e) => {
                 e.preventDefault();
@@ -1031,7 +1233,6 @@ R3440 R5055 R6030 R6440</pre>
             });
         });
 
-        // 用户菜单
         document.getElementById('profileBtn')?.addEventListener('click', (e) => { e.preventDefault(); document.getElementById('userMenu').classList.remove('active'); showProfileModal(); });
         document.getElementById('mobileProfileLink')?.addEventListener('click', (e) => { e.preventDefault(); closeMobileMenu(); showProfileModal(); });
         document.getElementById('adminBtn')?.addEventListener('click', (e) => { e.preventDefault(); document.getElementById('userMenu').classList.remove('active'); showToast('演示模式，后台管理暂未开放'); });
@@ -1039,7 +1240,6 @@ R3440 R5055 R6030 R6440</pre>
         document.getElementById('logoutBtn')?.addEventListener('click', (e) => { e.preventDefault(); document.getElementById('userMenu').classList.remove('active'); logout(); });
         document.getElementById('deleteAccountBtn')?.addEventListener('click', (e) => { e.preventDefault(); document.getElementById('userMenu').classList.remove('active'); deleteAccount(); });
         
-        // 修复账户按钮点击：确保点击图标能切换菜单
         const userIcon = document.getElementById('userIconBtn');
         if (userIcon) {
             userIcon.addEventListener('click', userIconClickHandler);
@@ -1065,20 +1265,36 @@ R3440 R5055 R6030 R6440</pre>
             }
         });
 
-        // 人机验证（算术）
         let currentCaptchaAnswer = 0;
         function showCaptchaModal() {
             const modal = document.getElementById('globalModal');
             const lang = getCurrentLanguage();
-            const titleMap = { zh:'人机验证', en:'Captcha', ja:'認証', ko:'보안 인증' };
+            const titleMap = { 
+                zh:'人机验证', 'zh-TW':'人機驗證', en:'Captcha', ja:'認証', ko:'보안 인증',
+                es:'Captcha', fr:'Captcha', pt:'Captcha', ar:'التحقق', de:'Captcha', ru:'Капча', it:'Captcha', tr:'Doğrulama',
+                vi:'Xác minh', th:'การยืนยัน', id:'Verifikasi'
+            };
             const title = titleMap[lang] || titleMap.en;
             const num1 = Math.floor(Math.random() * 10) + 1;
             const num2 = Math.floor(Math.random() * 10) + 1;
             currentCaptchaAnswer = num1 + num2;
-            const questionMap = { zh:`请计算：${num1} + ${num2} = ?`, en:`Calculate: ${num1} + ${num2} = ?`, ja:`計算してください：${num1} + ${num2} = ?`, ko:`계산하세요: ${num1} + ${num2} = ?` };
+            const questionMap = { 
+                zh:`请计算：${num1} + ${num2} = ?`, 'zh-TW':`請計算：${num1} + ${num2} = ?`,
+                en:`Calculate: ${num1} + ${num2} = ?`, ja:`計算してください：${num1} + ${num2} = ?`, ko:`계산하세요: ${num1} + ${num2} = ?`,
+                es:`Calcula: ${num1} + ${num2} = ?`, fr:`Calculez : ${num1} + ${num2} = ?`, pt:`Calcule: ${num1} + ${num2} = ?`,
+                ar:`احسب: ${num1} + ${num2} = ?`, de:`Berechne: ${num1} + ${num2} = ?`, ru:`Вычислите: ${num1} + ${num2} = ?`,
+                it:`Calcola: ${num1} + ${num2} = ?`, tr:`Hesapla: ${num1} + ${num2} = ?`, vi:`Tính: ${num1} + ${num2} = ?`,
+                th:`คำนวณ: ${num1} + ${num2} = ?`, id:`Hitung: ${num1} + ${num2} = ?`
+            };
             const question = questionMap[lang] || questionMap.en;
-            const placeholderMap = { zh:'输入答案', en:'Enter answer', ja:'答えを入力', ko:'답 입력' };
-            const verifyMap = { zh:'验证', en:'Verify', ja:'確認', ko:'확인' };
+            const placeholderMap = { zh:'输入答案', 'zh-TW':'輸入答案', en:'Enter answer', ja:'答えを入力', ko:'답 입력',
+                es:'Ingresa respuesta', fr:'Entrez la réponse', pt:'Digite a resposta', ar:'أدخل الإجابة', de:'Antwort eingeben',
+                ru:'Введите ответ', it:'Inserisci risposta', tr:'Cevabı girin', vi:'Nhập câu trả lời', th:'ป้อนคำตอบ', id:'Masukkan jawaban'
+            };
+            const verifyMap = { zh:'验证', 'zh-TW':'驗證', en:'Verify', ja:'確認', ko:'확인',
+                es:'Verificar', fr:'Vérifier', pt:'Verificar', ar:'تحقق', de:'Bestätigen', ru:'Проверить', it:'Verifica', tr:'Doğrula',
+                vi:'Xác nhận', th:'ยืนยัน', id:'Verifikasi'
+            };
             document.getElementById('modalTitle').innerText = title;
             document.getElementById('modalContent').innerHTML = `
                 <p style="margin-bottom:16px;">${question}</p>
@@ -1091,7 +1307,11 @@ R3440 R5055 R6030 R6440</pre>
             document.getElementById('submitCaptchaBtn').addEventListener('click', () => {
                 const answer = parseInt(document.getElementById('captchaAnswer').value);
                 const errorDiv = document.getElementById('captchaError');
-                const errorMsg = { zh:'答案错误，请重试', en:'Incorrect answer, try again', ja:'答えが間違っています', ko:'오답입니다. 다시 시도하세요' };
+                const errorMsg = { 
+                    zh:'答案错误，请重试', 'zh-TW':'答案錯誤，請重試', en:'Incorrect answer, try again', ja:'答えが間違っています', ko:'오답입니다. 다시 시도하세요',
+                    es:'Respuesta incorrecta', fr:'Réponse incorrecte', pt:'Resposta incorreta', ar:'إجابة خاطئة', de:'Falsche Antwort',
+                    ru:'Неверный ответ', it:'Risposta errata', tr:'Yanlış cevap', vi:'Câu trả lời sai', th:'คำตอบไม่ถูกต้อง', id:'Jawaban salah'
+                };
                 if (answer === currentCaptchaAnswer) {
                     captchaPassed = true;
                     showToast(lang === 'zh' ? '验证成功' : 'Verification successful');
@@ -1105,7 +1325,12 @@ R3440 R5055 R6030 R6440</pre>
 
         document.getElementById('doLoginBtn')?.addEventListener('click',async()=>{
             const lang = getCurrentLanguage();
-            const msg = { zh:'请先完成人机验证', en:'Please complete captcha first', ja:'認証を完了してください', ko:'보안 인증을 완료하세요' };
+            const msg = { 
+                zh:'请先完成人机验证', 'zh-TW':'請先完成人機驗證', en:'Please complete captcha first', ja:'認証を完了してください', ko:'보안 인증을 완료하세요',
+                es:'Complete el captcha primero', fr:'Veuillez d\'abord valider le captcha', pt:'Complete o captcha primeiro', ar:'أكمل التحقق أولاً',
+                de:'Bitte zuerst Captcha abschließen', ru:'Сначала пройдите капчу', it:'Completa prima il captcha', tr:'Önce doğrulamayı tamamlayın',
+                vi:'Vui lòng hoàn tất xác minh', th:'โปรดยืนยันตัวตนก่อน', id:'Selesaikan verifikasi terlebih dahulu'
+            };
             if(!captchaPassed){ showToast(msg[lang] || msg.en); return; }
             const id=document.getElementById('loginUsername').value.trim(), pwd=document.getElementById('loginPassword').value;
             const user=users.find(u=>u.username===id||u.email===id); if(!user){ alert('用户不存在'); return; }
@@ -1120,7 +1345,6 @@ R3440 R5055 R6030 R6440</pre>
         document.getElementById('forgotPasswordLink')?.addEventListener('click',(e)=>{ e.preventDefault(); document.getElementById('accountLoginPanel').style.display='none'; document.getElementById('registerFormPanel').style.display='none'; document.getElementById('forgotFormPanel').style.display='block'; });
         document.getElementById('backToLoginFromForgot')?.addEventListener('click',(e)=>{ e.preventDefault(); document.getElementById('accountLoginPanel').style.display='block'; document.getElementById('registerFormPanel').style.display='none'; document.getElementById('forgotFormPanel').style.display='none'; });
         
-        // 注册协议复选框控制按钮状态
         const agree1 = document.getElementById('agreeTerms1');
         const agree2 = document.getElementById('agreeTerms2');
         const agree3 = document.getElementById('agreeTerms3');
@@ -1137,16 +1361,28 @@ R3440 R5055 R6030 R6440</pre>
         document.getElementById('doRegisterBtn')?.addEventListener('click',async()=>{
             const lang = getCurrentLanguage();
             if(!agree1.checked||!agree2.checked||!agree3.checked){ 
-                const msg = { zh:'请勾选全部协议', en:'Please agree to all terms', ja:'すべての規約に同意してください', ko:'모든 약관에 동의해주세요' };
+                const msg = { zh:'请勾选全部协议', 'zh-TW':'請勾選全部協議', en:'Please agree to all terms', ja:'すべての規約に同意してください', ko:'모든 약관에 동의해주세요' };
                 showToast(msg[lang] || msg.en); 
                 return; 
             }
             const un=document.getElementById('regUsername').value.trim(), em=document.getElementById('regEmail').value.trim(), pwd=document.getElementById('regPassword').value, cf=document.getElementById('regConfirmPwd').value, err=document.getElementById('regError');
             const errorMsg = {
                 zh: { missing: '请填写用户名和邮箱', exist: '用户名已存在', invalidPwd: '密码需8位以上，含大小写数字特殊符号', mismatch: '两次密码不一致' },
+                'zh-TW': { missing: '請填寫使用者名稱和電子郵件', exist: '使用者名稱已存在', invalidPwd: '密碼需8位以上，包含大小寫數字特殊符號', mismatch: '兩次密碼不一致' },
                 en: { missing: 'Username and email required', exist: 'Username already exists', invalidPwd: 'Password must be at least 8 characters with upper/lower case, number, and special symbol', mismatch: 'Passwords do not match' },
                 ja: { missing: 'ユーザー名とメールアドレスを入力してください', exist: 'ユーザー名は既に存在します', invalidPwd: 'パスワードは8文字以上で大文字・小文字・数字・記号を含めてください', mismatch: 'パスワードが一致しません' },
-                ko: { missing: '사용자명과 이메일을 입력하세요', exist: '이미 존재하는 사용자명입니다', invalidPwd: '비밀번호는 8자 이상, 대소문자/숫자/특수문자를 포함해야 합니다', mismatch: '비밀번호가 일치하지 않습니다' }
+                ko: { missing: '사용자명과 이메일을 입력하세요', exist: '이미 존재하는 사용자명입니다', invalidPwd: '비밀번호는 8자 이상, 대소문자/숫자/특수문자를 포함해야 합니다', mismatch: '비밀번호가 일치하지 않습니다' },
+                es: { missing: 'Usuario y correo requeridos', exist: 'El usuario ya existe', invalidPwd: 'La contraseña debe tener al menos 8 caracteres con mayúsculas, minúsculas, números y símbolos', mismatch: 'Las contraseñas no coinciden' },
+                fr: { missing: 'Nom d\'utilisateur et email requis', exist: 'Nom d\'utilisateur déjà pris', invalidPwd: 'Le mot de passe doit contenir au moins 8 caractères avec majuscule, minuscule, chiffre et symbole', mismatch: 'Les mots de passe ne correspondent pas' },
+                pt: { missing: 'Usuário e email obrigatórios', exist: 'Usuário já existe', invalidPwd: 'A senha deve ter pelo menos 8 caracteres com maiúscula, minúscula, número e símbolo', mismatch: 'As senhas não coincidem' },
+                ar: { missing: 'اسم المستخدم والبريد الإلكتروني مطلوبان', exist: 'اسم المستخدم موجود مسبقاً', invalidPwd: 'يجب أن تتكون كلمة المرور من 8 أحرف على الأقل وتحتوي على أحرف كبيرة وصغيرة وأرقام ورموز', mismatch: 'كلمات المرور غير متطابقة' },
+                de: { missing: 'Benutzername und E-Mail erforderlich', exist: 'Benutzername bereits vergeben', invalidPwd: 'Passwort muss mindestens 8 Zeichen mit Groß-/Kleinbuchstaben, Zahlen und Sonderzeichen enthalten', mismatch: 'Passwörter stimmen nicht überein' },
+                ru: { missing: 'Требуется имя пользователя и email', exist: 'Имя пользователя уже существует', invalidPwd: 'Пароль должен содержать не менее 8 символов, включая заглавные, строчные, цифры и спецсимволы', mismatch: 'Пароли не совпадают' },
+                it: { missing: 'Nome utente e email richiesti', exist: 'Nome utente già esistente', invalidPwd: 'La password deve contenere almeno 8 caratteri con maiuscole, minuscole, numeri e simboli', mismatch: 'Le password non corrispondono' },
+                tr: { missing: 'Kullanıcı adı ve e-posta gerekli', exist: 'Kullanıcı adı zaten mevcut', invalidPwd: 'Şifre en az 8 karakter, büyük/küçük harf, rakam ve özel karakter içermelidir', mismatch: 'Şifreler eşleşmiyor' },
+                vi: { missing: 'Yêu cầu tên người dùng và email', exist: 'Tên người dùng đã tồn tại', invalidPwd: 'Mật khẩu phải có ít nhất 8 ký tự bao gồm chữ hoa, chữ thường, số và ký tự đặc biệt', mismatch: 'Mật khẩu không khớp' },
+                th: { missing: 'ต้องระบุชื่อผู้ใช้และอีเมล', exist: 'ชื่อผู้ใช้มีอยู่แล้ว', invalidPwd: 'รหัสผ่านต้องมีอย่างน้อย 8 ตัวอักษร ประกอบด้วยตัวพิมพ์ใหญ่ ตัวพิมพ์เล็ก ตัวเลข และอักขระพิเศษ', mismatch: 'รหัสผ่านไม่ตรงกัน' },
+                id: { missing: 'Nama pengguna dan email diperlukan', exist: 'Nama pengguna sudah ada', invalidPwd: 'Kata sandi minimal 8 karakter dengan huruf besar/kecil, angka, dan simbol', mismatch: 'Kata sandi tidak cocok' }
             };
             const eMsg = errorMsg[lang] || errorMsg.en;
             if(!un||!em){ err.innerText = eMsg.missing; return; } 
@@ -1212,9 +1448,21 @@ R3440 R5055 R6030 R6440</pre>
                 const lang = getCurrentLanguage();
                 const titles = {
                     zh: { typhoon:'全球台风监测', satellite:'卫星云图中心', model:'专业数值预报', env:'环境场分析', history:'历史强台风档案' },
+                    'zh-TW': { typhoon:'全球颱風監測', satellite:'衛星雲圖中心', model:'專業數值預報', env:'環境場分析', history:'歷史強颱風檔案' },
                     en: { typhoon:'Global Typhoon Monitor', satellite:'Satellite Imagery Center', model:'Professional Forecast', env:'Environmental Analysis', history:'Historical Typhoon Archive' },
                     ja: { typhoon:'台風モニター', satellite:'衛星画像', model:'数値予報', env:'環境場', history:'過去の台風' },
-                    ko: { typhoon:'태풍 모니터', satellite:'위성 영상', model:'수치 예보', env:'환경장', history:'태풍 아카이브' }
+                    ko: { typhoon:'태풍 모니터', satellite:'위성 영상', model:'수치 예보', env:'환경장', history:'태풍 아카이브' },
+                    es: { typhoon:'Monitor de Tifones Global', satellite:'Centro de Imágenes Satelitales', model:'Pronóstico Profesional', env:'Análisis Ambiental', history:'Archivo Histórico de Tifones' },
+                    fr: { typhoon:'Surveillance Mondiale des Typhons', satellite:'Imagerie Satellitaire', model:'Prévisions Professionnelles', env:'Analyse Environnementale', history:'Archives Historiques' },
+                    pt: { typhoon:'Monitor Global de Tufões', satellite:'Centro de Imagens de Satélite', model:'Previsão Profissional', env:'Análise Ambiental', history:'Arquivo Histórico' },
+                    ar: { typhoon:'مراقبة الأعاصير العالمية', satellite:'مركز صور الأقمار الصناعية', model:'التوقعات الاحترافية', env:'تحليل البيئة', history:'الأرشيف التاريخي' },
+                    de: { typhoon:'Globaler Taifun-Monitor', satellite:'Satellitenbildzentrum', model:'Professionelle Vorhersage', env:'Umweltanalyse', history:'Historisches Archiv' },
+                    ru: { typhoon:'Глобальный мониторинг тайфунов', satellite:'Спутниковые снимки', model:'Профессиональный прогноз', env:'Анализ окружающей среды', history:'Исторический архив' },
+                    it: { typhoon:'Monitoraggio Globale Tifoni', satellite:'Immagini Satellitari', model:'Previsioni Professionali', env:'Analisi Ambientale', history:'Archivio Storico' },
+                    tr: { typhoon:'Küresel Tayfun İzleme', satellite:'Uydu Görüntü Merkezi', model:'Profesyonel Tahmin', env:'Çevresel Analiz', history:'Tarihsel Arşiv' },
+                    vi: { typhoon:'Giám sát Bão Toàn cầu', satellite:'Hình ảnh Vệ tinh', model:'Dự báo Chuyên nghiệp', env:'Phân tích Môi trường', history:'Lưu trữ Lịch sử' },
+                    th: { typhoon:'การติดตามพายุไต้ฝุ่นทั่วโลก', satellite:'ภาพถ่ายดาวเทียม', model:'พยากรณ์อากาศมืออาชีพ', env:'การวิเคราะห์สภาพแวดล้อม', history:'คลังประวัติ' },
+                    id: { typhoon:'Pemantauan Topan Global', satellite:'Citra Satelit', model:'Prakiraan Profesional', env:'Analisis Lingkungan', history:'Arsip Historis' }
                 };
                 const details = {
                     zh: {
@@ -1223,6 +1471,13 @@ R3440 R5055 R6030 R6440</pre>
                         model:'ECMWF/GFS 集合预报，极端天气指数，概率预报图。',
                         env:'垂直风切变、海温距平、湿度场，辅助台风强度研判。',
                         history:'1945年至今西北太平洋台风最佳路径数据集，包含卫星影像与雷达资料。'
+                    },
+                    'zh-TW': {
+                        typhoon:'即時颱風路徑、強度預測、風場分析。資料源自 JMA/JTWC/CMA，更新頻率6小時。',
+                        satellite:'多通道衛星雲圖，可見光、紅外、水汽，覆蓋全球。支援動畫與圖層疊加。',
+                        model:'ECMWF/GFS 集合預報，極端天氣指數，機率預報圖。',
+                        env:'垂直風切變、海溫距平、濕度場，輔助颱風強度研判。',
+                        history:'1945年至今西北太平洋颱風最佳路徑資料集，包含衛星影像與雷達資料。'
                     },
                     en: {
                         typhoon:'Real-time typhoon track, intensity forecast, wind field analysis. Data from JMA/JTWC/CMA, updated every 6 hours.',
@@ -1244,6 +1499,83 @@ R3440 R5055 R6030 R6440</pre>
                         model:'ECMWF/GFS 앙상블 예보, 극한 기상 지수, 확률 예보도.',
                         env:'연직 시어, 해수면 온도 편차, 습도장. 태풍 강도 판단 보조.',
                         history:'1945년 이후 북서태평양 태풍 베스트 트랙 데이터, 위성 영상 및 레이더 자료 포함.'
+                    },
+                    es: {
+                        typhoon:'Trayectoria de tifones en tiempo real, pronóstico de intensidad, análisis de campo de viento. Datos de JMA/JTWC/CMA, actualización cada 6 horas.',
+                        satellite:'Imágenes satelitales multicanal (visible, infrarrojo, vapor de agua), cobertura global. Animación y superposición de capas.',
+                        model:'Pronóstico por conjuntos ECMWF/GFS, índices meteorológicos extremos, mapas de probabilidad.',
+                        env:'Cizalladura vertical, anomalías de TSM, campos de humedad para evaluar la intensidad del tifón.',
+                        history:'Conjunto de datos de mejores trayectorias de tifones del Pacífico Noroeste desde 1945, incluyendo imágenes satelitales y radar.'
+                    },
+                    fr: {
+                        typhoon:'Trajectoire des typhons en temps réel, prévision d\'intensité, analyse du champ de vent. Données JMA/JTWC/CMA, mises à jour toutes les 6 heures.',
+                        satellite:'Imagerie satellitaire multicanal (visible, infrarouge, vapeur d\'eau), couverture mondiale. Animation et superposition de couches.',
+                        model:'Prévision d\'ensemble ECMWF/GFS, indices météorologiques extrêmes, cartes de probabilité.',
+                        env:'Cisaillement vertical, anomalies de SST, champs d\'humidité pour évaluer l\'intensité des typhons.',
+                        history:'Ensemble de données des meilleures trajectoires des typhons du Pacifique Nord-Ouest depuis 1945, incluant images satellite et radar.'
+                    },
+                    pt: {
+                        typhoon:'Trajetória de tufões em tempo real, previsão de intensidade, análise de campo de vento. Dados do JMA/JTWC/CMA, atualizados a cada 6 horas.',
+                        satellite:'Imagens de satélite multicanal (visível, infravermelho, vapor de água), cobertura global. Animação e sobreposição de camadas.',
+                        model:'Previsão por conjunto ECMWF/GFS, índices climáticos extremos, mapas de probabilidade.',
+                        env:'Cisalhamento vertical, anomalias de TSM, campos de umidade para auxiliar na avaliação da intensidade do tufão.',
+                        history:'Conjunto de dados de melhores trajetórias de tufões do Pacífico Noroeste desde 1945, incluindo imagens de satélite e radar.'
+                    },
+                    ar: {
+                        typhoon:'مسار الإعصار في الوقت الحقيقي، توقعات الشدة، تحليل مجال الرياح. بيانات من JMA/JTWC/CMA، تحديث كل 6 ساعات.',
+                        satellite:'صور أقمار صناعية متعددة القنوات (مرئية، تحت الحمراء، بخار الماء)، تغطية عالمية. دعم الرسوم المتحركة وتراكب الطبقات.',
+                        model:'توقعات ECMWF/GFS الجماعية، مؤشرات الطقس المتطرف، خرائط الاحتمالات.',
+                        env:'قص الرياح العمودي، شذوذ درجة حرارة سطح البحر، حقول الرطوبة للمساعدة في تقييم شدة الإعصار.',
+                        history:'مجموعة بيانات أفضل مسارات أعاصير شمال غرب المحيط الهادئ منذ عام 1945، بما في ذلك صور الأقمار الصناعية والرادار.'
+                    },
+                    de: {
+                        typhoon:'Echtzeit-Taifunverfolgung, Intensitätsvorhersage, Windfeldanalyse. Daten von JMA/JTWC/CMA, Aktualisierung alle 6 Stunden.',
+                        satellite:'Mehrkanal-Satellitenbilder (sichtbar, infrarot, Wasserdampf), globale Abdeckung. Animation und Ebenenüberlagerung.',
+                        model:'ECMWF/GFS Ensemble-Vorhersage, Extremwetterindizes, Wahrscheinlichkeitskarten.',
+                        env:'Vertikale Windscherung, SST-Anomalien, Feuchtefelder zur Unterstützung der Taifun-Intensitätsbewertung.',
+                        history:'Beste Zugbahn-Datensätze für NW-Pazifik-Taifune seit 1945, inklusive Satellitenbilder und Radardaten.'
+                    },
+                    ru: {
+                        typhoon:'Отслеживание тайфунов в реальном времени, прогноз интенсивности, анализ поля ветра. Данные JMA/JTWC/CMA, обновление каждые 6 часов.',
+                        satellite:'Многоканальные спутниковые снимки (видимый, инфракрасный, водяной пар), глобальный охват. Поддержка анимации и наложения слоёв.',
+                        model:'Ансамблевый прогноз ECMWF/GFS, индексы экстремальной погоды, вероятностные карты.',
+                        env:'Вертикальный сдвиг ветра, аномалии ТПО, поля влажности для оценки интенсивности тайфуна.',
+                        history:'Набор данных лучших траекторий тайфунов СЗ Тихого океана с 1945 года, включая спутниковые снимки и радарные данные.'
+                    },
+                    it: {
+                        typhoon:'Tracciamento tifoni in tempo reale, previsioni di intensità, analisi del campo di vento. Dati JMA/JTWC/CMA, aggiornamento ogni 6 ore.',
+                        satellite:'Immagini satellitari multicanale (visibile, infrarosso, vapore acqueo), copertura globale. Supporto animazione e sovrapposizione livelli.',
+                        model:'Previsioni d\'insieme ECMWF/GFS, indici meteorologici estremi, mappe di probabilità.',
+                        env:'Wind shear verticale, anomalie SST, campi di umidità per la valutazione dell\'intensità dei tifoni.',
+                        history:'Dataset delle migliori traiettorie dei tifoni del Pacifico nord-occidentale dal 1945, inclusi immagini satellitari e dati radar.'
+                    },
+                    tr: {
+                        typhoon:'Gerçek zamanlı tayfun takibi, yoğunluk tahmini, rüzgar alanı analizi. JMA/JTWC/CMA verileri, her 6 saatte bir güncellenir.',
+                        satellite:'Çok kanallı uydu görüntüleri (görünür, kızılötesi, su buharı), küresel kapsam. Animasyon ve katman bindirme desteği.',
+                        model:'ECMWF/GFS topluluk tahmini, aşırı hava endeksleri, olasılık haritaları.',
+                        env:'Dikey rüzgar kesmesi, SST anomalileri, nem alanları tayfun yoğunluğu değerlendirmesine yardımcı olur.',
+                        history:'1945\'ten bu yana Kuzeybatı Pasifik tayfunlarının en iyi yol veri seti, uydu görüntüleri ve radar verilerini içerir.'
+                    },
+                    vi: {
+                        typhoon:'Theo dõi bão thời gian thực, dự báo cường độ, phân tích trường gió. Dữ liệu từ JMA/JTWC/CMA, cập nhật mỗi 6 giờ.',
+                        satellite:'Ảnh vệ tinh đa kênh (khả kiến, hồng ngoại, hơi nước), phủ toàn cầu. Hỗ trợ hoạt ảnh và lớp phủ.',
+                        model:'Dự báo tổ hợp ECMWF/GFS, chỉ số thời tiết cực đoan, bản đồ xác suất.',
+                        env:'Đứt gió thẳng đứng, dị thường SST, trường độ ẩm hỗ trợ đánh giá cường độ bão.',
+                        history:'Bộ dữ liệu đường đi tốt nhất của bão Tây Bắc Thái Bình Dương từ năm 1945, bao gồm ảnh vệ tinh và dữ liệu radar.'
+                    },
+                    th: {
+                        typhoon:'การติดตามพายุไต้ฝุ่นแบบเรียลไทม์ การคาดการณ์ความรุนแรง การวิเคราะห์สนามลม ข้อมูลจาก JMA/JTWC/CMA อัปเดตทุก 6 ชั่วโมง',
+                        satellite:'ภาพถ่ายดาวเทียมหลายช่องสัญญาณ (มองเห็นได้ อินฟราเรด ไอน้ำ) ครอบคลุมทั่วโลก รองรับภาพเคลื่อนไหวและการซ้อนทับชั้นข้อมูล',
+                        model:'การพยากรณ์ชุดรวม ECMWF/GFS ดัชนีสภาพอากาศสุดขั้ว แผนที่ความน่าจะเป็น',
+                        env:'แรงเฉือนแนวตั้ง ความผิดปกติของอุณหภูมิผิวน้ำทะเล สนามความชื้นช่วยประเมินความรุนแรงของพายุ',
+                        history:'ชุดข้อมูลเส้นทางที่ดีที่สุดของพายุไต้ฝุ่นแปซิฟิกตะวันตกเฉียงเหนือตั้งแต่ปี 1945 รวมถึงภาพถ่ายดาวเทียมและข้อมูลเรดาร์'
+                    },
+                    id: {
+                        typhoon:'Pelacakan topan waktu nyata, prakiraan intensitas, analisis medan angin. Data dari JMA/JTWC/CMA, diperbarui setiap 6 jam.',
+                        satellite:'Citra satelit multi-saluran (cahaya tampak, inframerah, uap air), cakupan global. Mendukung animasi dan overlay lapisan.',
+                        model:'Prakiraan ansambel ECMWF/GFS, indeks cuaca ekstrem, peta probabilitas.',
+                        env:'Geser angin vertikal, anomali SST, medan kelembaban untuk membantu penilaian intensitas topan.',
+                        history:'Dataset lintasan terbaik topan Pasifik Barat Laut sejak 1945, termasuk citra satelit dan data radar.'
                     }
                 };
                 const modal=document.getElementById('globalModal'); 
@@ -1259,16 +1591,37 @@ R3440 R5055 R6030 R6440</pre>
         function showAbout(){
             const lang = getCurrentLanguage();
             const isZh = lang === 'zh';
-            const titles = { zh:'关于 ZIY', en:'About ZIY', ja:'ZIYについて', ko:'ZIY 소개' };
-            const subheads = { zh:'全球气象智慧平台', en:'Global Weather Intelligence Platform', ja:'グローバル気象インテリジェンス', ko:'글로벌 기상 인텔리전스' };
+            const titles = { 
+                zh:'关于 ZIY', 'zh-TW':'關於 ZIY', en:'About ZIY', ja:'ZIYについて', ko:'ZIY 소개',
+                es:'Acerca de ZIY', fr:'À propos de ZIY', pt:'Sobre ZIY', ar:'حول ZIY', de:'Über ZIY', ru:'О ZIY', it:'Informazioni su ZIY',
+                tr:'ZIY Hakkında', vi:'Về ZIY', th:'เกี่ยวกับ ZIY', id:'Tentang ZIY'
+            };
+            const subheads = { 
+                zh:'全球气象智慧平台', 'zh-TW':'全球氣象智慧平台', en:'Global Weather Intelligence Platform', ja:'グローバル気象インテリジェンス', ko:'글로벌 기상 인텔리전스',
+                es:'Plataforma Global de Inteligencia Meteorológica', fr:'Plateforme Mondiale d\'Intelligence Météorologique', pt:'Plataforma Global de Inteligência Meteorológica',
+                ar:'منصة ذكاء الطقس العالمية', de:'Globale Wetterintelligenz-Plattform', ru:'Глобальная платформа погодной аналитики', it:'Piattaforma Globale di Intelligenza Meteorologica',
+                tr:'Küresel Hava Durumu İstihbarat Platformu', vi:'Nền tảng Thông minh Thời tiết Toàn cầu', th:'แพลตฟอร์มอัจฉริยะสภาพอากาศโลก', id:'Platform Intelijen Cuaca Global'
+            };
             document.getElementById('aboutTitle').innerText = titles[lang] || titles.en;
             document.getElementById('aboutSubhead').innerText = subheads[lang] || subheads.en;
             
             const cardTitles = [
-                { zh:'精准 · 实时', en:'Precision · Real‑time', ja:'正確 · リアルタイム', ko:'정밀 · 실시간' },
-                { zh:'安全 · 隐私', en:'Security · Privacy', ja:'安全 · プライバシー', ko:'보안 · 개인정보' },
-                { zh:'全球 · 社区', en:'Global · Community', ja:'グローバル · コミュニティ', ko:'글로벌 · 커뮤니티' },
-                { zh:'智能 · 进化', en:'Intelligence · Evolution', ja:'知的 · 進化', ko:'지능 · 진화' }
+                { zh:'精准 · 实时', 'zh-TW':'精準 · 即時', en:'Precision · Real‑time', ja:'正確 · リアルタイム', ko:'정밀 · 실시간',
+                  es:'Precisión · Tiempo real', fr:'Précision · Temps réel', pt:'Precisão · Tempo real', ar:'الدقة · الوقت الفعلي', de:'Präzision · Echtzeit',
+                  ru:'Точность · Реальное время', it:'Precisione · Tempo reale', tr:'Hassasiyet · Gerçek Zamanlı', vi:'Chính xác · Thời gian thực',
+                  th:'แม่นยำ · เรียลไทม์', id:'Presisi · Waktu Nyata' },
+                { zh:'安全 · 隐私', 'zh-TW':'安全 · 隱私', en:'Security · Privacy', ja:'安全 · プライバシー', ko:'보안 · 개인정보',
+                  es:'Seguridad · Privacidad', fr:'Sécurité · Confidentialité', pt:'Segurança · Privacidade', ar:'الأمان · الخصوصية', de:'Sicherheit · Datenschutz',
+                  ru:'Безопасность · Конфиденциальность', it:'Sicurezza · Privacy', tr:'Güvenlik · Gizlilik', vi:'Bảo mật · Quyền riêng tư',
+                  th:'ความปลอดภัย · ความเป็นส่วนตัว', id:'Keamanan · Privasi' },
+                { zh:'全球 · 社区', 'zh-TW':'全球 · 社群', en:'Global · Community', ja:'グローバル · コミュニティ', ko:'글로벌 · 커뮤니티',
+                  es:'Global · Comunidad', fr:'Mondial · Communauté', pt:'Global · Comunidade', ar:'عالمي · مجتمع', de:'Global · Gemeinschaft',
+                  ru:'Глобальный · Сообщество', it:'Globale · Comunità', tr:'Küresel · Topluluk', vi:'Toàn cầu · Cộng đồng',
+                  th:'ทั่วโลก · ชุมชน', id:'Global · Komunitas' },
+                { zh:'智能 · 进化', 'zh-TW':'智慧 · 進化', en:'Intelligence · Evolution', ja:'知的 · 進化', ko:'지능 · 진화',
+                  es:'Inteligencia · Evolución', fr:'Intelligence · Évolution', pt:'Inteligência · Evolução', ar:'ذكاء · تطور', de:'Intelligenz · Evolution',
+                  ru:'Интеллект · Эволюция', it:'Intelligenza · Evoluzione', tr:'Zeka · Evrim', vi:'Thông minh · Tiến hóa',
+                  th:'อัจฉริยะ · วิวัฒนาการ', id:'Kecerdasan · Evolusi' }
             ];
             const cardTexts = {
                 zh: [
@@ -1276,6 +1629,12 @@ R3440 R5055 R6030 R6440</pre>
                     '端到端加密，数据最小化收集，符合国际隐私标准，守护您的每一次访问。',
                     '连接气象爱好者与专业人士，分享观测、交流分析，共建气象生态。',
                     'AI 增强预报，机器学习持续优化，让每一次预测都更接近真相。'
+                ],
+                'zh-TW': [
+                    '整合全球權威資料源，多源融合，分秒級更新，提供最可靠的氣象決策支援。',
+                    '端到端加密，資料最小化收集，符合國際隱私標準，守護您的每一次存取。',
+                    '連結氣象愛好者與專業人士，分享觀測、交流分析，共建氣象生態。',
+                    'AI 增強預報，機器學習持續最佳化，讓每一次預測都更接近真相。'
                 ],
                 en: [
                     'Integrate global authoritative data sources, multi-source fusion, second-level updates, providing the most reliable meteorological decision support.',
@@ -1294,6 +1653,72 @@ R3440 R5055 R6030 R6440</pre>
                     '종단간 암호화, 최소한의 데이터 수집, 국제 개인정보 보호 기준 준수.',
                     '기상 애호가와 전문가를 연결, 관측 공유 및 분석 교환으로 기상 생태계 구축.',
                     'AI 강화 예측, 머신러닝 지속 최적화로 예측 정확도 향상.'
+                ],
+                es: [
+                    'Integre fuentes de datos autorizadas globales, fusión de múltiples fuentes, actualizaciones en tiempo real, proporcionando el soporte de decisiones meteorológicas más confiable.',
+                    'Cifrado de extremo a extremo, recolección mínima de datos, cumpliendo con los estándares internacionales de privacidad, protegiendo cada visita.',
+                    'Conecte a entusiastas y profesionales del clima, comparta observaciones, intercambie análisis y construya juntos un ecosistema meteorológico.',
+                    'Pronóstico mejorado por IA, optimización continua del aprendizaje automático, acercando cada predicción a la verdad.'
+                ],
+                fr: [
+                    'Intégrez des sources de données mondiales faisant autorité, fusion multi-sources, mises à jour en temps réel, offrant le support décisionnel météorologique le plus fiable.',
+                    'Cryptage de bout en bout, collecte de données minimale, conforme aux normes internationales de confidentialité, protégeant chaque visite.',
+                    'Connectez les passionnés et les professionnels de la météo, partagez des observations, échangez des analyses et construisez ensemble un écosystème météorologique.',
+                    'Prévisions améliorées par l\'IA, optimisation continue par apprentissage automatique, rapprochant chaque prédiction de la vérité.'
+                ],
+                pt: [
+                    'Integre fontes de dados globais autorizadas, fusão de múltiplas fontes, atualizações em tempo real, fornecendo o suporte à decisão meteorológica mais confiável.',
+                    'Criptografia de ponta a ponta, coleta mínima de dados, em conformidade com os padrões internacionais de privacidade, protegendo cada visita.',
+                    'Conecte entusiastas e profissionais do clima, compartilhe observações, troque análises e construa juntos um ecossistema meteorológico.',
+                    'Previsão aprimorada por IA, otimização contínua por aprendizado de máquina, aproximando cada previsão da verdade.'
+                ],
+                ar: [
+                    'دمج مصادر البيانات العالمية الموثوقة، دمج متعدد المصادر، تحديثات في الوقت الفعلي، لتوفير أدق دعم لاتخاذ القرارات الجوية.',
+                    'تشفير من طرف إلى طرف، جمع أدنى حد من البيانات، بما يتوافق مع معايير الخصوصية الدولية، لحماية كل زيارة.',
+                    'ربط عشاق الطقس والمحترفين، مشاركة الملاحظات، تبادل التحليلات، وبناء منظومة جوية معًا.',
+                    'توقعات معززة بالذكاء الاصطناعي، تحسين مستمر بالتعلم الآلي، مما يجعل كل تنبؤ أقرب إلى الحقيقة.'
+                ],
+                de: [
+                    'Integrieren Sie globale autoritative Datenquellen, Multi-Source-Fusion, sekündliche Aktualisierungen, die zuverlässigste meteorologische Entscheidungsunterstützung.',
+                    'Ende-zu-Ende-Verschlüsselung, minimale Datenerfassung, konform mit internationalen Datenschutzstandards, schützt jeden Besuch.',
+                    'Verbinden Sie Wetterbegeisterte und Fachleute, teilen Sie Beobachtungen, tauschen Sie Analysen aus und bauen Sie gemeinsam ein meteorologisches Ökosystem auf.',
+                    'KI-gestützte Vorhersage, kontinuierliche Optimierung durch maschinelles Lernen, um jede Vorhersage näher an die Wahrheit zu bringen.'
+                ],
+                ru: [
+                    'Интегрируйте глобальные авторитетные источники данных, мульти-источниковое слияние, ежесекундные обновления, обеспечивая самую надежную поддержку принятия метеорологических решений.',
+                    'Сквозное шифрование, минимальный сбор данных, соответствие международным стандартам конфиденциальности, защита каждого посещения.',
+                    'Объединяйте энтузиастов и профессионалов погоды, делитесь наблюдениями, обменивайтесь анализом и вместе стройте метеорологическую экосистему.',
+                    'Прогнозирование с усилением ИИ, непрерывная оптимизация машинного обучения, делая каждый прогноз ближе к истине.'
+                ],
+                it: [
+                    'Integra fonti di dati globali autorevoli, fusione multi-fonte, aggiornamenti in tempo reale, fornendo il supporto decisionale meteorologico più affidabile.',
+                    'Crittografia end-to-end, raccolta dati minima, conforme agli standard internazionali sulla privacy, proteggendo ogni visita.',
+                    'Connetti appassionati e professionisti del meteo, condividi osservazioni, scambia analisi e costruisci insieme un ecosistema meteorologico.',
+                    'Previsioni potenziate dall\'IA, ottimizzazione continua del machine learning, avvicinando ogni previsione alla verità.'
+                ],
+                tr: [
+                    'Küresel yetkili veri kaynaklarını entegre edin, çok kaynaklı birleştirme, saniyelik güncellemeler, en güvenilir meteorolojik karar desteğini sağlayın.',
+                    'Uçtan uca şifreleme, minimum veri toplama, uluslararası gizlilik standartlarına uygun, her ziyareti korur.',
+                    'Hava durumu meraklılarını ve profesyonelleri birbirine bağlayın, gözlemleri paylaşın, analiz alışverişinde bulunun ve birlikte bir meteorolojik ekosistem oluşturun.',
+                    'Yapay zeka destekli tahmin, sürekli makine öğrenimi optimizasyonu, her tahmini gerçeğe yaklaştırır.'
+                ],
+                vi: [
+                    'Tích hợp các nguồn dữ liệu có thẩm quyền toàn cầu, hợp nhất đa nguồn, cập nhật từng giây, cung cấp hỗ trợ quyết định khí tượng đáng tin cậy nhất.',
+                    'Mã hóa đầu cuối, thu thập dữ liệu tối thiểu, tuân thủ các tiêu chuẩn quyền riêng tư quốc tế, bảo vệ mỗi lần truy cập.',
+                    'Kết nối những người đam mê thời tiết và chuyên gia, chia sẻ quan sát, trao đổi phân tích và cùng nhau xây dựng hệ sinh thái khí tượng.',
+                    'Dự báo tăng cường AI, tối ưu hóa học máy liên tục, đưa mỗi dự đoán đến gần hơn với sự thật.'
+                ],
+                th: [
+                    'รวมแหล่งข้อมูลที่เชื่อถือได้ทั่วโลก หลอมรวมหลายแหล่ง อัปเดตทุกวินาที ให้การสนับสนุนการตัดสินใจด้านอุตุนิยมวิทยาที่น่าเชื่อถือที่สุด',
+                    'การเข้ารหัสแบบครบวงจร การเก็บข้อมูลน้อยที่สุด สอดคล้องกับมาตรฐานความเป็นส่วนตัวสากล ปกป้องทุกการเยี่ยมชม',
+                    'เชื่อมต่อผู้ที่ชื่นชอบสภาพอากาศและมืออาชีพ แบ่งปันการสังเกต แลกเปลี่ยนการวิเคราะห์ และร่วมกันสร้างระบบนิเวศอุตุนิยมวิทยา',
+                    'การพยากรณ์ที่ขับเคลื่อนด้วย AI การเพิ่มประสิทธิภาพการเรียนรู้ของเครื่องอย่างต่อเนื่อง ทำให้ทุกการคาดการณ์ใกล้เคียงความจริงมากขึ้น'
+                ],
+                id: [
+                    'Integrasikan sumber data otoritatif global, fusi multi-sumber, pembaruan tiap detik, menyediakan dukungan keputusan meteorologi paling andal.',
+                    'Enkripsi ujung ke ujung, pengumpulan data minimal, sesuai dengan standar privasi internasional, melindungi setiap kunjungan.',
+                    'Hubungkan penggemar cuaca dan profesional, bagikan pengamatan, tukar analisis, dan bangun ekosistem meteorologi bersama.',
+                    'Perkiraan yang ditingkatkan AI, optimasi pembelajaran mesin berkelanjutan, membuat setiap prediksi lebih mendekati kebenaran.'
                 ]
             };
             
@@ -1304,14 +1729,31 @@ R3440 R5055 R6030 R6440</pre>
                 if (p) p.innerText = (cardTexts[lang] || cardTexts.en)[index];
             });
             
-            const footerText = { zh:'ZIY Inc.  © 2026  ·  版本 2.0  ·  保留所有权利', en:'ZIY Inc.  © 2026  ·  Version 2.0  ·  All rights reserved', ja:'ZIY Inc.  © 2026  ·  バージョン 2.0  ·  全著作権所有', ko:'ZIY Inc.  © 2026  ·  버전 2.0  ·  모든 권리 보유' };
+            const footerText = { 
+                zh:'ZIY Inc.  © 2026  ·  版本 2.0  ·  保留所有权利', 
+                'zh-TW':'ZIY Inc.  © 2026  ·  版本 2.0  ·  保留所有權利',
+                en:'ZIY Inc.  © 2026  ·  Version 2.0  ·  All rights reserved', 
+                ja:'ZIY Inc.  © 2026  ·  バージョン 2.0  ·  全著作権所有', 
+                ko:'ZIY Inc.  © 2026  ·  버전 2.0  ·  모든 권리 보유',
+                es:'ZIY Inc.  © 2026  ·  Versión 2.0  ·  Todos los derechos reservados',
+                fr:'ZIY Inc.  © 2026  ·  Version 2.0  ·  Tous droits réservés',
+                pt:'ZIY Inc.  © 2026  ·  Versão 2.0  ·  Todos os direitos reservados',
+                ar:'ZIY Inc.  © 2026  ·  الإصدار 2.0  ·  جميع الحقوق محفوظة',
+                de:'ZIY Inc.  © 2026  ·  Version 2.0  ·  Alle Rechte vorbehalten',
+                ru:'ZIY Inc.  © 2026  ·  Версия 2.0  ·  Все права защищены',
+                it:'ZIY Inc.  © 2026  ·  Versione 2.0  ·  Tutti i diritti riservati',
+                tr:'ZIY Inc.  © 2026  ·  Sürüm 2.0  ·  Tüm hakları saklıdır',
+                vi:'ZIY Inc.  © 2026  ·  Phiên bản 2.0  ·  Đã đăng ký bản quyền',
+                th:'ZIY Inc.  © 2026  ·  เวอร์ชัน 2.0  ·  สงวนลิขสิทธิ์',
+                id:'ZIY Inc.  © 2026  ·  Versi 2.0  ·  Hak cipta dilindungi'
+            };
             document.getElementById('aboutFooter').innerHTML = footerText[lang] || footerText.en;
             
             document.getElementById('aboutModal').classList.add('show');
             updateMenuIconState();
         }
 
-        // 法律协议模态框逻辑（稳定版）
+        // 法律协议模态框
         function showLegalModal(termType) {
             const lang = getCurrentLanguage();
             const isZh = lang === 'zh';
@@ -1321,33 +1763,84 @@ R3440 R5055 R6030 R6440</pre>
             const contentEl = document.getElementById('legalContent');
             
             let title, updated, content = '';
-            const dateStr = { zh:'2026年4月21日', en:'April 21, 2026', ja:'2026年4月21日', ko:'2026년 4월 21일' };
-            const prefix = { zh:'最后更新：', en:'Last updated: ', ja:'最終更新：', ko:'최종 업데이트: ' };
+            const dateStr = { zh:'2026年4月21日', 'zh-TW':'2026年4月21日', en:'April 21, 2026', ja:'2026年4月21日', ko:'2026년 4월 21일',
+                es:'21 de abril de 2026', fr:'21 avril 2026', pt:'21 de abril de 2026', ar:'21 أبريل 2026', de:'21. April 2026',
+                ru:'21 апреля 2026 г.', it:'21 aprile 2026', tr:'21 Nisan 2026', vi:'21 tháng 4 năm 2026', th:'21 เมษายน 2026', id:'21 April 2026'
+            };
+            const prefix = { zh:'最后更新：', 'zh-TW':'最後更新：', en:'Last updated: ', ja:'最終更新：', ko:'최종 업데이트: ',
+                es:'Última actualización: ', fr:'Dernière mise à jour : ', pt:'Última atualização: ', ar:'آخر تحديث: ', de:'Letzte Aktualisierung: ',
+                ru:'Последнее обновление: ', it:'Ultimo aggiornamento: ', tr:'Son güncelleme: ', vi:'Cập nhật lần cuối: ', th:'อัปเดตล่าสุด: ', id:'Terakhir diperbarui: '
+            };
             updated = prefix[lang] + dateStr[lang];
             
             if (termType === 'terms') {
-                title = { zh:'使用条款', en:'Terms of Use', ja:'利用規約', ko:'이용 약관' }[lang];
+                title = { zh:'使用条款', 'zh-TW':'使用條款', en:'Terms of Use', ja:'利用規約', ko:'이용 약관',
+                    es:'Términos de Uso', fr:'Conditions d\'utilisation', pt:'Termos de Uso', ar:'شروط الاستخدام', de:'Nutzungsbedingungen',
+                    ru:'Условия использования', it:'Termini di utilizzo', tr:'Kullanım Şartları', vi:'Điều khoản sử dụng', th:'ข้อกำหนดการใช้งาน', id:'Ketentuan Penggunaan'
+                }[lang];
                 content = {
                     zh: `<p>1. 服务仅供信息参考，不保证数据准确、完整与及时。</p><p>2. 服务可随时变更、暂停或终止，无需提前通知。</p><p>3. 用户不得滥用服务、爬虫、攻击或干扰系统。</p><p>4. 使用风险由用户自行承担，本站不承担任何直接或间接损失。</p><p>5. 继续使用即视为接受本条款，条款可随时更新。</p>`,
+                    'zh-TW': `<p>1. 服務僅供資訊參考，不保證資料準確、完整與及時。</p><p>2. 服務可隨時變更、暫停或終止，無需提前通知。</p><p>3. 使用者不得濫用服務、爬蟲、攻擊或干擾系統。</p><p>4. 使用風險由使用者自行承擔，本站不承擔任何直接或間接損失。</p><p>5. 繼續使用即視為接受本條款，條款可隨時更新。</p>`,
                     en: `<p>1. The service is for informational purposes only, without guarantee of accuracy, completeness or timeliness.</p><p>2. Services may be changed, suspended or terminated at any time without prior notice.</p><p>3. Users must not abuse the service, crawl, attack or interfere with the system.</p><p>4. Use at your own risk. We are not liable for any direct or indirect damages.</p><p>5. Continued use constitutes acceptance of these terms, which may be updated at any time.</p>`,
                     ja: `<p>1. 本サービスは情報提供のみを目的とし、正確性・完全性・適時性を保証しません。</p><p>2. サービスは予告なく変更・一時停止・終了する場合があります。</p><p>3. 不正利用、クローリング、攻撃、システム妨害を禁止します。</p><p>4. 利用は自己責任とし、当サイトは一切の損害について責任を負いません。</p><p>5. 継続利用をもって本規約に同意したものとみなし、規約は随時更新されます。</p>`,
-                    ko: `<p>1. 서비스는 정보 참고용으로만 제공되며 데이터의 정확성, 완전성, 적시성을 보장하지 않습니다.</p><p>2. 서비스는 사전 통지 없이 변경, 중단 또는 종료될 수 있습니다.</p><p>3. 서비스 남용, 크롤링, 공격, 시스템 방해를 금지합니다.</p><p>4. 이용 위험은 사용자가 부담하며 당사는 직간접적 손해에 대해 책임지지 않습니다.</p><p>5. 계속 이용 시 본 약관에 동의한 것으로 간주되며 약관은 언제든지 업데이트될 수 있습니다.</p>`
+                    ko: `<p>1. 서비스는 정보 참고용으로만 제공되며 데이터의 정확성, 완전성, 적시성을 보장하지 않습니다.</p><p>2. 서비스는 사전 통지 없이 변경, 중단 또는 종료될 수 있습니다.</p><p>3. 서비스 남용, 크롤링, 공격, 시스템 방해를 금지합니다.</p><p>4. 이용 위험은 사용자가 부담하며 당사는 직간접적 손해에 대해 책임지지 않습니다.</p><p>5. 계속 이용 시 본 약관에 동의한 것으로 간주되며 약관은 언제든지 업데이트될 수 있습니다.</p>`,
+                    es: `<p>1. El servicio es solo para fines informativos, sin garantía de exactitud, integridad o puntualidad.</p><p>2. Los servicios pueden modificarse, suspenderse o cancelarse en cualquier momento sin previo aviso.</p><p>3. Los usuarios no deben abusar del servicio, rastrear, atacar o interferir con el sistema.</p><p>4. Úselo bajo su propio riesgo. No somos responsables de ningún daño directo o indirecto.</p><p>5. El uso continuado constituye la aceptación de estos términos, que pueden actualizarse en cualquier momento.</p>`,
+                    fr: `<p>1. Le service est fourni à titre informatif uniquement, sans garantie d\'exactitude, d\'exhaustivité ou de ponctualité.</p><p>2. Les services peuvent être modifiés, suspendus ou interrompus à tout moment sans préavis.</p><p>3. Les utilisateurs ne doivent pas abuser du service, explorer, attaquer ou interférer avec le système.</p><p>4. Utilisation à vos propres risques. Nous ne sommes pas responsables des dommages directs ou indirects.</p><p>5. L\'utilisation continue constitue l\'acceptation de ces conditions, qui peuvent être mises à jour à tout moment.</p>`,
+                    pt: `<p>1. O serviço é apenas para fins informativos, sem garantia de precisão, integridade ou pontualidade.</p><p>2. Os serviços podem ser alterados, suspensos ou encerrados a qualquer momento sem aviso prévio.</p><p>3. Os usuários não devem abusar do serviço, rastrear, atacar ou interferir no sistema.</p><p>4. Use por sua conta e risco. Não nos responsabilizamos por quaisquer danos diretos ou indiretos.</p><p>5. O uso continuado constitui aceitação destes termos, que podem ser atualizados a qualquer momento.</p>`,
+                    ar: `<p>1. الخدمة لأغراض إعلامية فقط، دون ضمان الدقة أو الاكتمال أو التوقيت.</p><p>2. يمكن تغيير الخدمات أو تعليقها أو إنهاؤها في أي وقت دون إشعار مسبق.</p><p>3. يجب على المستخدمين عدم إساءة استخدام الخدمة أو الزحف أو الهجوم أو التدخل في النظام.</p><p>4. الاستخدام على مسؤوليتك الخاصة. لسنا مسؤولين عن أي أضرار مباشرة أو غير مباشرة.</p><p>5. الاستمرار في الاستخدام يشكل قبولًا لهذه الشروط، والتي يمكن تحديثها في أي وقت.</p>`,
+                    de: `<p>1. Der Dienst dient nur zu Informationszwecken, ohne Gewähr für Richtigkeit, Vollständigkeit oder Aktualität.</p><p>2. Dienste können jederzeit ohne vorherige Ankündigung geändert, ausgesetzt oder eingestellt werden.</p><p>3. Benutzer dürfen den Dienst nicht missbrauchen, crawlen, angreifen oder das System stören.</p><p>4. Nutzung auf eigene Gefahr. Wir haften nicht für direkte oder indirekte Schäden.</p><p>5. Die fortgesetzte Nutzung gilt als Annahme dieser Bedingungen, die jederzeit aktualisiert werden können.</p>`,
+                    ru: `<p>1. Сервис предоставляется только в информационных целях, без гарантии точности, полноты или своевременности.</p><p>2. Услуги могут быть изменены, приостановлены или прекращены в любое время без предварительного уведомления.</p><p>3. Пользователи не должны злоупотреблять сервисом, сканировать, атаковать или вмешиваться в работу системы.</p><p>4. Используйте на свой страх и риск. Мы не несем ответственности за прямые или косвенные убытки.</p><p>5. Продолжение использования означает принятие этих условий, которые могут обновляться в любое время.</p>`,
+                    it: `<p>1. Il servizio è solo a scopo informativo, senza garanzia di accuratezza, completezza o tempestività.</p><p>2. I servizi possono essere modificati, sospesi o interrotti in qualsiasi momento senza preavviso.</p><p>3. Gli utenti non devono abusare del servizio, eseguire crawling, attaccare o interferire con il sistema.</p><p>4. Utilizzare a proprio rischio. Non siamo responsabili per eventuali danni diretti o indiretti.</p><p>5. L\'uso continuato costituisce accettazione di questi termini, che possono essere aggiornati in qualsiasi momento.</p>`,
+                    tr: `<p>1. Hizmet yalnızca bilgi amaçlıdır, doğruluk, eksiksizlik veya güncellik garantisi vermez.</p><p>2. Hizmetler önceden haber verilmeksizin her zaman değiştirilebilir, askıya alınabilir veya sonlandırılabilir.</p><p>3. Kullanıcılar hizmeti kötüye kullanmamalı, tarama yapmamalı, saldırmamalı veya sisteme müdahale etmemelidir.</p><p>4. Kullanım riski size aittir. Doğrudan veya dolaylı hiçbir zarardan sorumlu değiliz.</p><p>5. Kullanmaya devam etmek, her zaman güncellenebilecek bu koşulları kabul ettiğiniz anlamına gelir.</p>`,
+                    vi: `<p>1. Dịch vụ chỉ nhằm mục đích thông tin, không đảm bảo tính chính xác, đầy đủ hoặc kịp thời.</p><p>2. Dịch vụ có thể được thay đổi, tạm ngừng hoặc chấm dứt bất cứ lúc nào mà không cần thông báo trước.</p><p>3. Người dùng không được lạm dụng dịch vụ, thu thập dữ liệu, tấn công hoặc can thiệp vào hệ thống.</p><p>4. Sử dụng với rủi ro của riêng bạn. Chúng tôi không chịu trách nhiệm về bất kỳ thiệt hại trực tiếp hoặc gián tiếp nào.</p><p>5. Tiếp tục sử dụng đồng nghĩa với việc chấp nhận các điều khoản này, có thể được cập nhật bất cứ lúc nào.</p>`,
+                    th: `<p>1. บริการนี้มีวัตถุประสงค์เพื่อให้ข้อมูลเท่านั้น ไม่รับประกันความถูกต้อง ครบถ้วน หรือทันเวลา</p><p>2. บริการอาจเปลี่ยนแปลง ระงับ หรือยุติได้ตลอดเวลาโดยไม่ต้องแจ้งให้ทราบล่วงหน้า</p><p>3. ผู้ใช้ต้องไม่ละเมิดบริการ ขูดข้อมูล โจมตี หรือแทรกแซงระบบ</p><p>4. ใช้ด้วยความเสี่ยงของคุณเอง เราไม่รับผิดชอบต่อความเสียหายโดยตรงหรือโดยอ้อมใดๆ</p><p>5. การใช้ต่อไปถือเป็นการยอมรับข้อกำหนดเหล่านี้ ซึ่งอาจปรับปรุงได้ตลอดเวลา</p>`,
+                    id: `<p>1. Layanan hanya untuk tujuan informasi, tanpa jaminan keakuratan, kelengkapan, atau ketepatan waktu.</p><p>2. Layanan dapat diubah, ditangguhkan, atau dihentikan kapan saja tanpa pemberitahuan sebelumnya.</p><p>3. Pengguna tidak boleh menyalahgunakan layanan, merayapi, menyerang, atau mengganggu sistem.</p><p>4. Gunakan dengan risiko Anda sendiri. Kami tidak bertanggung jawab atas kerusakan langsung atau tidak langsung.</p><p>5. Penggunaan berkelanjutan merupakan penerimaan terhadap ketentuan ini, yang dapat diperbarui kapan saja.</p>`
                 };
             } else if (termType === 'privacy') {
-                title = { zh:'隐私政策', en:'Privacy Policy', ja:'プライバシーポリシー', ko:'개인정보 처리방침' }[lang];
+                title = { zh:'隐私政策', 'zh-TW':'隱私政策', en:'Privacy Policy', ja:'プライバシーポリシー', ko:'개인정보 처리방침',
+                    es:'Política de Privacidad', fr:'Politique de confidentialité', pt:'Política de Privacidade', ar:'سياسة الخصوصية', de:'Datenschutzrichtlinie',
+                    ru:'Политика конфиденциальности', it:'Informativa sulla privacy', tr:'Gizlilik Politikası', vi:'Chính sách Bảo mật', th:'นโยบายความเป็นส่วนตัว', id:'Kebijakan Privasi'
+                }[lang];
                 content = {
                     zh: `<p>1. 不收集、不存储个人身份信息与敏感数据。</p><p>2. 仅记录匿名技术日志，用于服务优化与安全维护。</p><p>3. 数据绝不出售、共享或用于商业用途。</p><p>4. 第三方数据接口受其自身规则约束。</p><p>5. 政策可更新，继续使用即视为同意修订内容。</p>`,
+                    'zh-TW': `<p>1. 不收集、不儲存個人身分資訊與敏感資料。</p><p>2. 僅記錄匿名技術日誌，用於服務最佳化與安全維護。</p><p>3. 資料絕不出售、共享或用於商業用途。</p><p>4. 第三方資料介面受其自身規則約束。</p><p>5. 政策可更新，繼續使用即視為同意修訂內容。</p>`,
                     en: `<p>1. We do not collect or store personally identifiable information or sensitive data.</p><p>2. Only anonymous technical logs are recorded for service optimization and security.</p><p>3. Data is never sold, shared, or used for commercial purposes.</p><p>4. Third-party data interfaces are subject to their own rules.</p><p>5. This policy may be updated; continued use constitutes acceptance of changes.</p>`,
                     ja: `<p>1. 個人を特定できる情報や機密データは収集・保存しません。</p><p>2. サービス改善とセキュリティのため匿名の技術ログのみ記録します。</p><p>3. データは一切販売・共有・商用利用されません。</p><p>4. サードパーティデータインターフェースはそれぞれの規約に従います。</p><p>5. 本方針は更新されることがあり、継続利用は変更に同意したものとみなします。</p>`,
-                    ko: `<p>1. 개인 식별 정보 및 민감 데이터를 수집하거나 저장하지 않습니다.</p><p>2. 서비스 최적화 및 보안을 위해 익명 기술 로그만 기록합니다.</p><p>3. 데이터는 판매, 공유 또는 상업적 목적으로 사용되지 않습니다.</p><p>4. 제3자 데이터 인터페이스는 해당 규칙을 따릅니다.</p><p>5. 본 정책은 업데이트될 수 있으며 계속 이용 시 변경 사항에 동의한 것으로 간주됩니다.</p>`
+                    ko: `<p>1. 개인 식별 정보 및 민감 데이터를 수집하거나 저장하지 않습니다.</p><p>2. 서비스 최적화 및 보안을 위해 익명 기술 로그만 기록합니다.</p><p>3. 데이터는 판매, 공유 또는 상업적 목적으로 사용되지 않습니다.</p><p>4. 제3자 데이터 인터페이스는 해당 규칙을 따릅니다.</p><p>5. 본 정책은 업데이트될 수 있으며 계속 이용 시 변경 사항에 동의한 것으로 간주됩니다.</p>`,
+                    es: `<p>1. No recopilamos ni almacenamos información de identificación personal ni datos confidenciales.</p><p>2. Solo se registran registros técnicos anónimos para la optimización y seguridad del servicio.</p><p>3. Los datos nunca se venden, comparten ni utilizan con fines comerciales.</p><p>4. Las interfaces de datos de terceros están sujetas a sus propias reglas.</p><p>5. Esta política puede actualizarse; el uso continuado constituye la aceptación de los cambios.</p>`,
+                    fr: `<p>1. Nous ne collectons ni ne stockons aucune information personnellement identifiable ni donnée sensible.</p><p>2. Seuls des journaux techniques anonymes sont enregistrés pour l\'optimisation et la sécurité du service.</p><p>3. Les données ne sont jamais vendues, partagées ou utilisées à des fins commerciales.</p><p>4. Les interfaces de données tierces sont soumises à leurs propres règles.</p><p>5. Cette politique peut être mise à jour ; l\'utilisation continue constitue l\'acceptation des modifications.</p>`,
+                    pt: `<p>1. Não coletamos ou armazenamos informações de identificação pessoal ou dados confidenciais.</p><p>2. Apenas registros técnicos anônimos são registrados para otimização e segurança do serviço.</p><p>3. Os dados nunca são vendidos, compartilhados ou usados para fins comerciais.</p><p>4. As interfaces de dados de terceiros estão sujeitas às suas próprias regras.</p><p>5. Esta política pode ser atualizada; o uso continuado constitui aceitação das alterações.</p>`,
+                    ar: `<p>1. لا نقوم بجمع أو تخزين معلومات التعريف الشخصية أو البيانات الحساسة.</p><p>2. يتم تسجيل السجلات التقنية المجهولة فقط لتحسين الخدمة والأمان.</p><p>3. لا يتم بيع البيانات أو مشاركتها أو استخدامها لأغراض تجارية أبدًا.</p><p>4. تخضع واجهات بيانات الطرف الثالث لقواعدها الخاصة.</p><p>5. يمكن تحديث هذه السياسة؛ الاستمرار في الاستخدام يشكل قبولًا بالتغييرات.</p>`,
+                    de: `<p>1. Wir sammeln oder speichern keine personenbezogenen Daten oder sensible Informationen.</p><p>2. Es werden nur anonyme technische Protokolle zur Serviceoptimierung und Sicherheit aufgezeichnet.</p><p>3. Daten werden niemals verkauft, geteilt oder für kommerzielle Zwecke verwendet.</p><p>4. Datenschnittstellen Dritter unterliegen ihren eigenen Regeln.</p><p>5. Diese Richtlinie kann aktualisiert werden; die fortgesetzte Nutzung gilt als Annahme der Änderungen.</p>`,
+                    ru: `<p>1. Мы не собираем и не храним личную информацию или конфиденциальные данные.</p><p>2. Только анонимные технические журналы записываются для оптимизации и безопасности сервиса.</p><p>3. Данные никогда не продаются, не передаются и не используются в коммерческих целях.</p><p>4. Интерфейсы данных третьих сторон регулируются их собственными правилами.</p><p>5. Политика может обновляться; продолжение использования означает согласие с изменениями.</p>`,
+                    it: `<p>1. Non raccogliamo né archiviamo informazioni di identificazione personale o dati sensibili.</p><p>2. Vengono registrati solo log tecnici anonimi per l\'ottimizzazione e la sicurezza del servizio.</p><p>3. I dati non vengono mai venduti, condivisi o utilizzati per scopi commerciali.</p><p>4. Le interfacce dati di terze parti sono soggette alle proprie regole.</p><p>5. Questa politica può essere aggiornata; l\'uso continuato costituisce accettazione delle modifiche.</p>`,
+                    tr: `<p>1. Kişisel tanımlayıcı bilgiler veya hassas veriler toplamaz veya saklamayız.</p><p>2. Yalnızca hizmet optimizasyonu ve güvenliği için anonim teknik günlükler kaydedilir.</p><p>3. Veriler asla satılmaz, paylaşılmaz veya ticari amaçlarla kullanılmaz.</p><p>4. Üçüncü taraf veri arayüzleri kendi kurallarına tabidir.</p><p>5. Bu politika güncellenebilir; kullanmaya devam etmek değişiklikleri kabul ettiğiniz anlamına gelir.</p>`,
+                    vi: `<p>1. Chúng tôi không thu thập hoặc lưu trữ thông tin nhận dạng cá nhân hoặc dữ liệu nhạy cảm.</p><p>2. Chỉ các nhật ký kỹ thuật ẩn danh được ghi lại để tối ưu hóa và bảo mật dịch vụ.</p><p>3. Dữ liệu không bao giờ bị bán, chia sẻ hoặc sử dụng cho mục đích thương mại.</p><p>4. Giao diện dữ liệu của bên thứ ba tuân theo các quy tắc riêng của họ.</p><p>5. Chính sách này có thể được cập nhật; tiếp tục sử dụng đồng nghĩa với việc chấp nhận các thay đổi.</p>`,
+                    th: `<p>1. เราไม่รวบรวมหรือจัดเก็บข้อมูลส่วนบุคคลหรือข้อมูลที่ละเอียดอ่อน</p><p>2. บันทึกทางเทคนิคที่ไม่ระบุตัวตนเท่านั้นที่ถูกบันทึกเพื่อเพิ่มประสิทธิภาพและความปลอดภัยของบริการ</p><p>3. ข้อมูลจะไม่ถูกขาย แบ่งปัน หรือใช้เพื่อวัตถุประสงค์ทางการค้า</p><p>4. อินเทอร์เฟซข้อมูลของบุคคลที่สามอยู่ภายใต้กฎของตนเอง</p><p>5. นโยบายนี้อาจได้รับการปรับปรุง การใช้ต่อไปถือเป็นการยอมรับการเปลี่ยนแปลง</p>`,
+                    id: `<p>1. Kami tidak mengumpulkan atau menyimpan informasi identitas pribadi atau data sensitif.</p><p>2. Hanya log teknis anonim yang dicatat untuk optimalisasi dan keamanan layanan.</p><p>3. Data tidak pernah dijual, dibagikan, atau digunakan untuk tujuan komersial.</p><p>4. Antarmuka data pihak ketiga tunduk pada aturan mereka sendiri.</p><p>5. Kebijakan ini dapat diperbarui; penggunaan berkelanjutan merupakan penerimaan terhadap perubahan.</p>`
                 };
             } else if (termType === 'legal') {
-                title = { zh:'法律信息', en:'Legal Information', ja:'法的情報', ko:'법적 고지' }[lang];
+                title = { zh:'法律信息', 'zh-TW':'法律資訊', en:'Legal Information', ja:'法的情報', ko:'법적 고지',
+                    es:'Información Legal', fr:'Informations Légales', pt:'Informações Legais', ar:'معلومات قانونية', de:'Rechtliche Informationen',
+                    ru:'Юридическая информация', it:'Informazioni Legali', tr:'Yasal Bilgiler', vi:'Thông tin Pháp lý', th:'ข้อมูลทางกฎหมาย', id:'Informasi Hukum'
+                }[lang];
                 content = {
                     zh: `<p>1. 本站知识产权受法律保护，未经许可禁止复制及商用。</p><p>2. 气象数据来源于第三方公开接口，仅供学习与参考。</p><p>3. 适用中华人民共和国法律，争议优先协商解决。</p><p>4. 网站内容不构成专业建议，使用责任自负。</p>`,
+                    'zh-TW': `<p>1. 本站智慧財產權受法律保護，未經許可禁止複製及商用。</p><p>2. 氣象資料來源於第三方公開介面，僅供學習與參考。</p><p>3. 適用中華人民共和國法律，爭議優先協商解決。</p><p>4. 網站內容不構成專業建議，使用責任自負。</p>`,
                     en: `<p>1. Intellectual property is protected by law. Unauthorized reproduction or commercial use is prohibited.</p><p>2. Meteorological data comes from third-party public interfaces for study and reference only.</p><p>3. Governed by the laws of the People's Republic of China; disputes shall be resolved through negotiation.</p><p>4. Website content does not constitute professional advice; use at your own risk.</p>`,
                     ja: `<p>1. 知的財産権は法律で保護されており、無断複製・商用利用を禁じます。</p><p>2. 気象データは第三者の公開インターフェースから取得し、学習・参考用です。</p><p>3. 中華人民共和国の法律に準拠し、紛争は協議による解決を優先します。</p><p>4. サイト内容は専門的助言を構成せず、利用は自己責任で行ってください。</p>`,
-                    ko: `<p>1. 지식재산권은 법률로 보호되며 무단 복제 및 상업적 이용을 금지합니다.</p><p>2. 기상 데이터는 제3자 공개 인터페이스에서 제공되며 학습 및 참고용입니다.</p><p>3. 중화인민공화국 법률을 적용하며 분쟁은 협상을 통해 해결합니다.</p><p>4. 웹사이트 내용은 전문적 조언을 구성하지 않으며 이용 책임은 본인에게 있습니다.</p>`
+                    ko: `<p>1. 지식재산권은 법률로 보호되며 무단 복제 및 상업적 이용을 금지합니다.</p><p>2. 기상 데이터는 제3자 공개 인터페이스에서 제공되며 학습 및 참고용입니다.</p><p>3. 중화인민공화국 법률을 적용하며 분쟁은 협상을 통해 해결합니다.</p><p>4. 웹사이트 내용은 전문적 조언을 구성하지 않으며 이용 책임은 본인에게 있습니다.</p>`,
+                    es: `<p>1. La propiedad intelectual está protegida por ley. Se prohíbe la reproducción no autorizada o el uso comercial.</p><p>2. Los datos meteorológicos provienen de interfaces públicas de terceros solo para estudio y referencia.</p><p>3. Regido por las leyes de la República Popular China; las disputas se resolverán mediante negociación.</p><p>4. El contenido del sitio web no constituye asesoramiento profesional; utilícelo bajo su propio riesgo.</p>`,
+                    fr: `<p>1. La propriété intellectuelle est protégée par la loi. Toute reproduction ou utilisation commerciale non autorisée est interdite.</p><p>2. Les données météorologiques proviennent d\'interfaces publiques tierces à des fins d\'étude et de référence uniquement.</p><p>3. Régi par les lois de la République populaire de Chine ; les litiges seront résolus par la négociation.</p><p>4. Le contenu du site ne constitue pas un avis professionnel ; utilisez-le à vos propres risques.</p>`,
+                    pt: `<p>1. A propriedade intelectual é protegida por lei. É proibida a reprodução não autorizada ou uso comercial.</p><p>2. Os dados meteorológicos vêm de interfaces públicas de terceiros apenas para estudo e referência.</p><p>3. Regido pelas leis da República Popular da China; disputas serão resolvidas por negociação.</p><p>4. O conteúdo do site não constitui aconselhamento profissional; use por sua conta e risco.</p>`,
+                    ar: `<p>1. الملكية الفكرية محمية بموجب القانون. يحظر النسخ غير المصرح به أو الاستخدام التجاري.</p><p>2. تأتي بيانات الأرصاد الجوية من واجهات عامة خارجية للدراسة والمرجعية فقط.</p><p>3. تخضع لقوانين جمهورية الصين الشعبية؛ يتم حل النزاعات عن طريق التفاوض.</p><p>4. لا يشكل محتوى الموقع نصيحة مهنية؛ استخدمه على مسؤوليتك الخاصة.</p>`,
+                    de: `<p>1. Geistiges Eigentum ist gesetzlich geschützt. Unerlaubte Vervielfältigung oder kommerzielle Nutzung ist untersagt.</p><p>2. Wetterdaten stammen aus öffentlichen Schnittstellen Dritter nur zu Studien- und Referenzzwecken.</p><p>3. Unterliegt den Gesetzen der Volksrepublik China; Streitigkeiten werden durch Verhandlungen beigelegt.</p><p>4. Der Inhalt der Website stellt keine professionelle Beratung dar; Nutzung auf eigene Gefahr.</p>`,
+                    ru: `<p>1. Интеллектуальная собственность защищена законом. Несанкционированное воспроизведение или коммерческое использование запрещено.</p><p>2. Метеорологические данные поступают из открытых интерфейсов третьих лиц только для изучения и ознакомления.</p><p>3. Регулируется законами Китайской Народной Республики; споры разрешаются путем переговоров.</p><p>4. Содержание сайта не является профессиональной консультацией; используйте на свой страх и риск.</p>`,
+                    it: `<p>1. La proprietà intellettuale è protetta dalla legge. È vietata la riproduzione non autorizzata o l\'uso commerciale.</p><p>2. I dati meteorologici provengono da interfacce pubbliche di terze parti solo a scopo di studio e riferimento.</p><p>3. Regolato dalle leggi della Repubblica Popolare Cinese; le controversie saranno risolte tramite negoziazione.</p><p>4. Il contenuto del sito non costituisce consulenza professionale; utilizzare a proprio rischio.</p>`,
+                    tr: `<p>1. Fikri mülkiyet yasalarla korunmaktadır. İzinsiz çoğaltma veya ticari kullanım yasaktır.</p><p>2. Meteorolojik veriler yalnızca çalışma ve referans amacıyla üçüncü taraf genel arayüzlerden gelir.</p><p>3. Çin Halk Cumhuriyeti yasalarına tabidir; anlaşmazlıklar müzakere yoluyla çözülecektir.</p><p>4. Web sitesi içeriği profesyonel tavsiye niteliği taşımaz; kullanım riski size aittir.</p>`,
+                    vi: `<p>1. Quyền sở hữu trí tuệ được pháp luật bảo vệ. Nghiêm cấm sao chép trái phép hoặc sử dụng thương mại.</p><p>2. Dữ liệu khí tượng đến từ các giao diện công cộng của bên thứ ba chỉ để nghiên cứu và tham khảo.</p><p>3. Tuân theo luật pháp của Cộng hòa Nhân dân Trung Hoa; tranh chấp sẽ được giải quyết thông qua thương lượng.</p><p>4. Nội dung trang web không cấu thành lời khuyên chuyên nghiệp; sử dụng với rủi ro của riêng bạn.</p>`,
+                    th: `<p>1. ทรัพย์สินทางปัญญาได้รับการคุ้มครองตามกฎหมาย ห้ามทำซ้ำหรือใช้ในเชิงพาณิชย์โดยไม่ได้รับอนุญาต</p><p>2. ข้อมูลอุตุนิยมวิทยามาจากอินเทอร์เฟซสาธารณะของบุคคลที่สามเพื่อการศึกษาและอ้างอิงเท่านั้น</p><p>3. อยู่ภายใต้กฎหมายของสาธารณรัฐประชาชนจีน ข้อพิพาทจะได้รับการแก้ไขผ่านการเจรจา</p><p>4. เนื้อหาของเว็บไซต์ไม่ถือเป็นคำแนะนำทางวิชาชีพ ใช้ด้วยความเสี่ยงของคุณเอง</p>`,
+                    id: `<p>1. Kekayaan intelektual dilindungi undang-undang. Dilarang mereproduksi atau menggunakan secara komersial tanpa izin.</p><p>2. Data meteorologi berasal dari antarmuka publik pihak ketiga hanya untuk studi dan referensi.</p><p>3. Diatur oleh hukum Republik Rakyat Tiongkok; perselisihan akan diselesaikan melalui negosiasi.</p><p>4. Konten situs web bukan merupakan nasihat profesional; gunakan dengan risiko Anda sendiri.</p>`
                 };
             }
             
@@ -1359,7 +1852,6 @@ R3440 R5055 R6030 R6440</pre>
             updateMenuIconState();
         }
 
-        // 绑定协议链接点击事件
         document.querySelectorAll('.term-link').forEach(link => {
             link.addEventListener('click', (e) => {
                 e.preventDefault();
@@ -1383,14 +1875,12 @@ R3440 R5055 R6030 R6440</pre>
         document.getElementById('cancelActionSheet')?.addEventListener('click',hideAgencyMenu);
         actionOverlay?.addEventListener('click',hideAgencyMenu);
 
-        // 语言切换逻辑
         const langToggleBtn = document.getElementById('langToggleBtn');
         const langDropdown = document.getElementById('langDropdown');
         const langCurrentText = document.getElementById('langCurrentText');
         const langItems = document.querySelectorAll('#langDropdown span');
         
         function setLanguage(lang){
-            // 更新激活状态
             langItems.forEach(item => {
                 if (item.dataset.lang === lang) {
                     item.classList.add('active');
@@ -1398,98 +1888,268 @@ R3440 R5055 R6030 R6440</pre>
                     item.classList.remove('active');
                 }
             });
-            // 更新显示文字
-            const names = { zh:'中文', en:'English', ja:'日本語', ko:'한국어' };
-            langCurrentText.innerText = names[lang] || '中文';
+            const names = { 
+                zh:'简体中文', 'zh-TW':'繁體中文', en:'English', ja:'日本語', ko:'한국어',
+                es:'Español', fr:'Français', pt:'Português', ar:'العربية', de:'Deutsch', ru:'Русский', it:'Italiano',
+                tr:'Türkçe', vi:'Tiếng Việt', th:'ภาษาไทย', id:'Bahasa Indonesia'
+            };
+            langCurrentText.innerText = names[lang] || '简体中文';
             langDropdown.classList.remove('active');
             langToggleBtn.classList.remove('active');
             
-            // 翻译映射（保留原有，并扩充日韩）
             const i18nMap = {
-                profile: { zh:'个人主页', en:'Profile', ja:'プロフィール', ko:'프로필' },
-                admin: { zh:'后台管理', en:'Admin', ja:'管理', ko:'관리자' },
-                logout: { zh:'退出登录', en:'Logout', ja:'ログアウト', ko:'로그아웃' },
-                delete: { zh:'注销账号', en:'Delete Account', ja:'アカウント削除', ko:'계정 삭제' },
-                typhoon: { zh:'台风监测', en:'Typhoon', ja:'台風', ko:'태풍' },
-                satellite: { zh:'卫星云图', en:'Satellite', ja:'衛星', ko:'위성' },
-                model: { zh:'数值预报', en:'Forecast', ja:'予報', ko:'예보' },
-                env: { zh:'环境场', en:'Environment', ja:'環境', ko:'환경' },
-                history: { zh:'历史档案', en:'History', ja:'履歴', ko:'기록' },
-                community: { zh:'社区', en:'Community', ja:'コミュニティ', ko:'커뮤니티' },
-                publish: { zh:'发布文章', en:'Publish', ja:'投稿', ko:'게시' },
-                about: { zh:'关于', en:'About', ja:'概要', ko:'소개' },
-                about_ziy: { zh:'关于 ZIY', en:'About ZIY', ja:'ZIYについて', ko:'ZIY 소개' },
-                learn_more: { zh:'进一步了解', en:'Learn More', ja:'詳細', ko:'더 알아보기' },
-                view_now: { zh:'立即查看', en:'View Now', ja:'今すぐ見る', ko:'지금 보기' },
-                browse_all: { zh:'浏览全部 →', en:'Browse all →', ja:'すべて見る →', ko:'모두 보기 →' },
-                search: { zh:'搜索', en:'Search', ja:'検索', ko:'검색' },
-                login: { zh:'登录', en:'Login', ja:'ログイン', ko:'로그인' },
-                register: { zh:'注册', en:'Register', ja:'登録', ko:'가입' },
-                forgot_password: { zh:'找回账号', en:'Forgot password', ja:'パスワード忘れ', ko:'비밀번호 찾기' },
-                slide_verify: { zh:'按住滑块验证', en:'Slide to verify', ja:'スライドして確認', ko:'밀어서 인증' },
-                remember_me: { zh:'记住我', en:'Remember me', ja:'ログイン状態を保持', ko:'로그인 유지' },
-                agree_terms: { zh:'我已阅读并同意', en:'I agree to the', ja:'以下に同意します', ko:'동의합니다' },
-                terms_link: { zh:'使用条款', en:'Terms of Use', ja:'利用規約', ko:'이용 약관' },
-                privacy_link: { zh:'隐私政策', en:'Privacy Policy', ja:'プライバシーポリシー', ko:'개인정보 처리방침' },
-                legal_link: { zh:'法律信息', en:'Legal Information', ja:'法的情報', ko:'법적 고지' },
-                have_account: { zh:'已有账号？去登录', en:'Already have an account? Login', ja:'アカウントをお持ちですか？', ko:'계정이 있으신가요?' },
-                recover: { zh:'发送找回信息', en:'Recover', ja:'再設定メール送信', ko:'복구' },
-                back_to_login: { zh:'返回登录', en:'Back to login', ja:'ログインに戻る', ko:'로그인으로 돌아가기' },
-                cover_photo: { zh:'封面照片', en:'Cover Photo', ja:'カバー写真', ko:'커버 사진' },
-                avatar: { zh:'头像', en:'Avatar', ja:'アバター', ko:'아바타' },
-                bio: { zh:'个人简介', en:'Bio', ja:'自己紹介', ko:'소개' },
-                linked_accounts: { zh:'绑定账号', en:'Linked Accounts', ja:'連携アカウント', ko:'연결 계정' },
-                wechat: { zh:'微信', en:'WeChat', ja:'WeChat', ko:'위챗' },
-                qq: { zh:'QQ', en:'QQ', ja:'QQ', ko:'QQ' },
-                bind: { zh:'绑定', en:'Bind', ja:'連携', ko:'연결' },
-                save_changes: { zh:'保存修改', en:'Save Changes', ja:'変更を保存', ko:'변경 저장' },
-                new_post: { zh:'新文章', en:'New Post', ja:'新規投稿', ko:'새 게시글' },
-                share_analysis: { zh:'分享你的气象分析', en:'Share your weather analysis', ja:'気象分析を共有', ko:'기상 분석 공유' },
-                insert_media: { zh:'插入图片 / 视频', en:'Insert images / videos', ja:'画像/動画を挿入', ko:'이미지/비디오 삽입' },
-                admin_panel: { zh:'后台管理', en:'Admin Panel', ja:'管理パネル', ko:'관리자 패널' },
-                close: { zh:'关闭', en:'Close', ja:'閉じる', ko:'닫기' },
-                comments: { zh:'评论', en:'Comments', ja:'コメント', ko:'댓글' },
-                post_comment: { zh:'发表评论', en:'Post Comment', ja:'コメント投稿', ko:'댓글 작성' },
-                data: { zh:'数据', en:'Data', ja:'データ', ko:'데이터' },
-                cancel: { zh:'取消', en:'Cancel', ja:'キャンセル', ko:'취소' },
-                select_agency: { zh:'选择数据源机构', en:'Select Data Source', ja:'データソース選択', ko:'데이터 소스 선택' },
-                copyright: { zh:'Copyright © 2026 ZIY Inc. 保留所有权利.', en:'Copyright © 2026 ZIY Inc. All rights reserved.', ja:'Copyright © 2026 ZIY Inc. All rights reserved.', ko:'Copyright © 2026 ZIY Inc. All rights reserved.' },
-                typhoon_title: { zh:'台风监测', en:'Typhoon', ja:'台風監視', ko:'태풍 감시' },
-                typhoon_sub: { zh:'轨迹 · 强度 · 风场', en:'Track · Intensity · Wind', ja:'経路 · 強度 · 風場', ko:'경로 · 강도 · 바람장' },
-                satellite_title: { zh:'卫星云图', en:'Satellite', ja:'衛星画像', ko:'위성 영상' },
-                satellite_sub: { zh:'多通道 · 实时 · 全球', en:'Multi‑band · Live · Global', ja:'マルチバンド · リアルタイム · 全球', ko:'다중 채널 · 실시간 · 글로벌' },
-                model_title: { zh:'数值预报', en:'Forecast', ja:'数値予報', ko:'수치 예보' },
-                model_sub: { zh:'全球模式 · 集合 · 预警', en:'Global · Ensemble · Alert', ja:'全球 · アンサンブル · 警報', ko:'글로벌 · 앙상블 · 경보' },
-                env_title: { zh:'环境场', en:'Environment', ja:'環境場', ko:'환경장' },
-                env_sub: { zh:'风切变 · 海温 · 湿度', en:'Shear · SST · Humidity', ja:'シアー · 海面水温 · 湿度', ko:'시어 · 해수온 · 습도' },
-                history_title: { zh:'历史档案', en:'Archive', ja:'アーカイブ', ko:'아카이브' },
-                history_sub: { zh:'完整生命周期', en:'Full life cycle', ja:'全ライフサイクル', ko:'전 생애 주기' },
-                community_title: { zh:'气象社区', en:'Community', ja:'気象コミュニティ', ko:'기상 커뮤니티' },
-                community_sub: { zh:'发布文章 · 图片视频', en:'Post · Photos · Videos', ja:'投稿 · 写真 · 動画', ko:'게시글 · 사진 · 비디오' },
-                login_greeting: { zh:'登录 ZIY', en:'Login ZIY', ja:'ZIYにログイン', ko:'ZIY 로그인' },
-                login_sub: { zh:'使用您的账户', en:'Use your account', ja:'アカウントを使用', ko:'계정 사용' },
-                account_label: { zh:'账号', en:'Account', ja:'アカウント', ko:'계정' },
-                username_placeholder: { zh:'用户名 / 邮箱', en:'Username / Email', ja:'ユーザー名 / メール', ko:'사용자명 / 이메일' },
-                password_placeholder: { zh:'密码', en:'Password', ja:'パスワード', ko:'비밀번호' },
-                register_title: { zh:'注册', en:'Register', ja:'登録', ko:'가입' },
-                email_placeholder: { zh:'邮箱', en:'Email', ja:'メールアドレス', ko:'이메일' },
-                confirm_password_placeholder: { zh:'确认密码', en:'Confirm Password', ja:'パスワード確認', ko:'비밀번호 확인' },
-                register_btn: { zh:'注册', en:'Register', ja:'登録', ko:'가입' },
-                forgot_title: { zh:'找回账号', en:'Recover Account', ja:'アカウント復旧', ko:'계정 복구' },
-                profile_title: { zh:'个人资料', en:'Profile', ja:'プロフィール', ko:'프로필' },
-                avatar_label: { zh:'头像', en:'Avatar', ja:'アバター', ko:'아바타' },
-                bio_placeholder: { zh:'写一点关于自己的介绍...', en:'Write a short bio...', ja:'自己紹介を入力...', ko:'자기소개 입력...' },
-                post_title_placeholder: { zh:'标题', en:'Title', ja:'タイトル', ko:'제목' },
-                post_content_placeholder: { zh:'正文内容', en:'Content', ja:'本文', ko:'내용' },
-                comment_placeholder: { zh:'写下你的评论...', en:'Write a comment...', ja:'コメントを入力...', ko:'댓글 입력...' },
-                hot_recommend: { zh:'热门推荐', en:'Hot Recommendations', ja:'おすすめ', ko:'추천' },
-                hot_tags: { zh:'热门标签', en:'Hot Tags', ja:'人気タグ', ko:'인기 태그' },
-                search_results: { zh:'搜索结果', en:'Search Results', ja:'検索結果', ko:'검색 결과' },
-                no_results: { zh:'没有找到相关文章', en:'No results found', ja:'記事が見つかりません', ko:'게시글을 찾을 수 없습니다' },
-                search_placeholder: { zh:'搜索', en:'Search', ja:'検索', ko:'검색' },
-                drag_hint: { zh:'拖动缩放', en:'Drag to zoom', ja:'ドラッグでズーム', ko:'드래그하여 확대' },
-                agree_privacy: { zh:'我已阅读并同意', en:'I agree to the', ja:'以下に同意します', ko:'동의합니다' },
-                agree_legal: { zh:'我已阅读并同意', en:'I agree to the', ja:'以下に同意します', ko:'동의합니다' }
+                profile: { zh:'个人主页', 'zh-TW':'個人主頁', en:'Profile', ja:'プロフィール', ko:'프로필',
+                    es:'Perfil', fr:'Profil', pt:'Perfil', ar:'الملف الشخصي', de:'Profil', ru:'Профиль', it:'Profilo',
+                    tr:'Profil', vi:'Hồ sơ', th:'โปรไฟล์', id:'Profil' },
+                admin: { zh:'后台管理', 'zh-TW':'後台管理', en:'Admin', ja:'管理', ko:'관리자',
+                    es:'Admin', fr:'Admin', pt:'Admin', ar:'المشرف', de:'Admin', ru:'Админ', it:'Admin',
+                    tr:'Yönetici', vi:'Quản trị', th:'ผู้ดูแล', id:'Admin' },
+                logout: { zh:'退出登录', 'zh-TW':'登出', en:'Logout', ja:'ログアウト', ko:'로그아웃',
+                    es:'Cerrar sesión', fr:'Déconnexion', pt:'Sair', ar:'تسجيل الخروج', de:'Abmelden', ru:'Выйти', it:'Esci',
+                    tr:'Çıkış', vi:'Đăng xuất', th:'ออกจากระบบ', id:'Keluar' },
+                delete: { zh:'注销账号', 'zh-TW':'註銷帳號', en:'Delete Account', ja:'アカウント削除', ko:'계정 삭제',
+                    es:'Eliminar cuenta', fr:'Supprimer le compte', pt:'Excluir conta', ar:'حذف الحساب', de:'Konto löschen', ru:'Удалить аккаунт', it:'Elimina account',
+                    tr:'Hesabı Sil', vi:'Xóa tài khoản', th:'ลบบัญชี', id:'Hapus Akun' },
+                typhoon: { zh:'台风监测', 'zh-TW':'颱風監測', en:'Typhoon', ja:'台風', ko:'태풍',
+                    es:'Tifón', fr:'Typhon', pt:'Tufão', ar:'إعصار', de:'Taifun', ru:'Тайфун', it:'Tifone',
+                    tr:'Tayfun', vi:'Bão', th:'พายุไต้ฝุ่น', id:'Topan' },
+                satellite: { zh:'卫星云图', 'zh-TW':'衛星雲圖', en:'Satellite', ja:'衛星', ko:'위성',
+                    es:'Satélite', fr:'Satellite', pt:'Satélite', ar:'قمر صناعي', de:'Satellit', ru:'Спутник', it:'Satellite',
+                    tr:'Uydu', vi:'Vệ tinh', th:'ดาวเทียม', id:'Satelit' },
+                model: { zh:'数值预报', 'zh-TW':'數值預報', en:'Forecast', ja:'予報', ko:'예보',
+                    es:'Pronóstico', fr:'Prévision', pt:'Previsão', ar:'توقعات', de:'Vorhersage', ru:'Прогноз', it:'Previsioni',
+                    tr:'Tahmin', vi:'Dự báo', th:'พยากรณ์', id:'Prakiraan' },
+                env: { zh:'环境场', 'zh-TW':'環境場', en:'Environment', ja:'環境', ko:'환경',
+                    es:'Entorno', fr:'Environnement', pt:'Ambiente', ar:'البيئة', de:'Umwelt', ru:'Окружающая среда', it:'Ambiente',
+                    tr:'Çevre', vi:'Môi trường', th:'สภาพแวดล้อม', id:'Lingkungan' },
+                history: { zh:'历史档案', 'zh-TW':'歷史檔案', en:'History', ja:'履歴', ko:'기록',
+                    es:'Historial', fr:'Historique', pt:'Histórico', ar:'السجل', de:'Verlauf', ru:'История', it:'Cronologia',
+                    tr:'Geçmiş', vi:'Lịch sử', th:'ประวัติ', id:'Riwayat' },
+                community: { zh:'社区', 'zh-TW':'社群', en:'Community', ja:'コミュニティ', ko:'커뮤니티',
+                    es:'Comunidad', fr:'Communauté', pt:'Comunidade', ar:'المجتمع', de:'Gemeinschaft', ru:'Сообщество', it:'Comunità',
+                    tr:'Topluluk', vi:'Cộng đồng', th:'ชุมชน', id:'Komunitas' },
+                publish: { zh:'发布文章', 'zh-TW':'發布文章', en:'Publish', ja:'投稿', ko:'게시',
+                    es:'Publicar', fr:'Publier', pt:'Publicar', ar:'نشر', de:'Veröffentlichen', ru:'Опубликовать', it:'Pubblica',
+                    tr:'Yayınla', vi:'Đăng', th:'เผยแพร่', id:'Terbitkan' },
+                about: { zh:'关于', 'zh-TW':'關於', en:'About', ja:'概要', ko:'소개',
+                    es:'Acerca de', fr:'À propos', pt:'Sobre', ar:'حول', de:'Über', ru:'О', it:'Informazioni',
+                    tr:'Hakkında', vi:'Về', th:'เกี่ยวกับ', id:'Tentang' },
+                about_ziy: { zh:'关于 ZIY', 'zh-TW':'關於 ZIY', en:'About ZIY', ja:'ZIYについて', ko:'ZIY 소개',
+                    es:'Acerca de ZIY', fr:'À propos de ZIY', pt:'Sobre ZIY', ar:'حول ZIY', de:'Über ZIY', ru:'О ZIY', it:'Informazioni su ZIY',
+                    tr:'ZIY Hakkında', vi:'Về ZIY', th:'เกี่ยวกับ ZIY', id:'Tentang ZIY' },
+                learn_more: { zh:'进一步了解', 'zh-TW':'進一步了解', en:'Learn More', ja:'詳細', ko:'더 알아보기',
+                    es:'Más información', fr:'En savoir plus', pt:'Saiba mais', ar:'اعرف المزيد', de:'Mehr erfahren', ru:'Узнать больше', it:'Scopri di più',
+                    tr:'Daha Fazla', vi:'Tìm hiểu thêm', th:'เรียนรู้เพิ่มเติม', id:'Pelajari Lebih Lanjut' },
+                view_now: { zh:'立即查看', 'zh-TW':'立即檢視', en:'View Now', ja:'今すぐ見る', ko:'지금 보기',
+                    es:'Ver ahora', fr:'Voir maintenant', pt:'Ver agora', ar:'عرض الآن', de:'Jetzt ansehen', ru:'Смотреть', it:'Visualizza ora',
+                    tr:'Şimdi Gör', vi:'Xem ngay', th:'ดูเลย', id:'Lihat Sekarang' },
+                browse_all: { zh:'浏览全部 →', 'zh-TW':'瀏覽全部 →', en:'Browse all →', ja:'すべて見る →', ko:'모두 보기 →',
+                    es:'Ver todo →', fr:'Tout parcourir →', pt:'Ver tudo →', ar:'تصفح الكل ←', de:'Alle durchsuchen →', ru:'Смотреть все →', it:'Sfoglia tutto →',
+                    tr:'Tümüne Göz At →', vi:'Duyệt tất cả →', th:'เรียกดูทั้งหมด →', id:'Jelajahi Semua →' },
+                search: { zh:'搜索', 'zh-TW':'搜尋', en:'Search', ja:'検索', ko:'검색',
+                    es:'Buscar', fr:'Rechercher', pt:'Buscar', ar:'بحث', de:'Suchen', ru:'Поиск', it:'Cerca',
+                    tr:'Ara', vi:'Tìm kiếm', th:'ค้นหา', id:'Cari' },
+                login: { zh:'登录', 'zh-TW':'登入', en:'Login', ja:'ログイン', ko:'로그인',
+                    es:'Iniciar sesión', fr:'Connexion', pt:'Entrar', ar:'تسجيل الدخول', de:'Anmelden', ru:'Войти', it:'Accedi',
+                    tr:'Giriş', vi:'Đăng nhập', th:'เข้าสู่ระบบ', id:'Masuk' },
+                register: { zh:'注册', 'zh-TW':'註冊', en:'Register', ja:'登録', ko:'가입',
+                    es:'Registrarse', fr:'S\'inscrire', pt:'Cadastrar', ar:'تسجيل', de:'Registrieren', ru:'Регистрация', it:'Registrati',
+                    tr:'Kaydol', vi:'Đăng ký', th:'ลงทะเบียน', id:'Daftar' },
+                forgot_password: { zh:'找回账号', 'zh-TW':'找回帳號', en:'Forgot password', ja:'パスワード忘れ', ko:'비밀번호 찾기',
+                    es:'Olvidé mi contraseña', fr:'Mot de passe oublié', pt:'Esqueci a senha', ar:'نسيت كلمة المرور', de:'Passwort vergessen', ru:'Забыли пароль', it:'Password dimenticata',
+                    tr:'Şifremi Unuttum', vi:'Quên mật khẩu', th:'ลืมรหัสผ่าน', id:'Lupa Kata Sandi' },
+                slide_verify: { zh:'按住滑块验证', 'zh-TW':'按住滑塊驗證', en:'Slide to verify', ja:'スライドして確認', ko:'밀어서 인증',
+                    es:'Deslice para verificar', fr:'Faites glisser pour vérifier', pt:'Deslize para verificar', ar:'اسحب للتحقق', de:'Zum Bestätigen schieben', ru:'Проведите для проверки', it:'Scorri per verificare',
+                    tr:'Doğrulamak için kaydırın', vi:'Trượt để xác minh', th:'เลื่อนเพื่อยืนยัน', id:'Geser untuk verifikasi' },
+                remember_me: { zh:'记住我', 'zh-TW':'記住我', en:'Remember me', ja:'ログイン状態を保持', ko:'로그인 유지',
+                    es:'Recuérdame', fr:'Se souvenir de moi', pt:'Lembrar de mim', ar:'تذكرني', de:'Angemeldet bleiben', ru:'Запомнить меня', it:'Ricordami',
+                    tr:'Beni Hatırla', vi:'Ghi nhớ tôi', th:'จดจำฉัน', id:'Ingat Saya' },
+                agree_terms: { zh:'我已阅读并同意', 'zh-TW':'我已閱讀並同意', en:'I agree to the', ja:'以下に同意します', ko:'동의합니다',
+                    es:'Acepto los', fr:'J\'accepte les', pt:'Aceito os', ar:'أوافق على', de:'Ich stimme den', ru:'Я согласен с', it:'Accetto i',
+                    tr:'Şunları kabul ediyorum:', vi:'Tôi đồng ý với', th:'ฉันยอมรับ', id:'Saya menyetujui' },
+                terms_link: { zh:'使用条款', 'zh-TW':'使用條款', en:'Terms of Use', ja:'利用規約', ko:'이용 약관',
+                    es:'Términos de Uso', fr:'Conditions d\'utilisation', pt:'Termos de Uso', ar:'شروط الاستخدام', de:'Nutzungsbedingungen',
+                    ru:'Условия использования', it:'Termini di utilizzo', tr:'Kullanım Şartları', vi:'Điều khoản sử dụng', th:'ข้อกำหนดการใช้งาน', id:'Ketentuan Penggunaan' },
+                privacy_link: { zh:'隐私政策', 'zh-TW':'隱私政策', en:'Privacy Policy', ja:'プライバシーポリシー', ko:'개인정보 처리방침',
+                    es:'Política de Privacidad', fr:'Politique de confidentialité', pt:'Política de Privacidade', ar:'سياسة الخصوصية', de:'Datenschutzrichtlinie',
+                    ru:'Политика конфиденциальности', it:'Informativa sulla privacy', tr:'Gizlilik Politikası', vi:'Chính sách Bảo mật', th:'นโยบายความเป็นส่วนตัว', id:'Kebijakan Privasi' },
+                legal_link: { zh:'法律信息', 'zh-TW':'法律資訊', en:'Legal Information', ja:'法的情報', ko:'법적 고지',
+                    es:'Información Legal', fr:'Informations Légales', pt:'Informações Legais', ar:'معلومات قانونية', de:'Rechtliche Informationen',
+                    ru:'Юридическая информация', it:'Informazioni Legali', tr:'Yasal Bilgiler', vi:'Thông tin Pháp lý', th:'ข้อมูลทางกฎหมาย', id:'Informasi Hukum' },
+                have_account: { zh:'已有账号？去登录', 'zh-TW':'已有帳號？去登入', en:'Already have an account? Login', ja:'アカウントをお持ちですか？', ko:'계정이 있으신가요?',
+                    es:'¿Ya tienes cuenta? Inicia sesión', fr:'Déjà un compte ? Connectez-vous', pt:'Já tem conta? Entrar', ar:'هل لديك حساب؟ تسجيل الدخول', de:'Bereits Konto? Anmelden',
+                    ru:'Уже есть аккаунт? Войти', it:'Hai già un account? Accedi', tr:'Zaten hesabınız var mı? Giriş yapın', vi:'Đã có tài khoản? Đăng nhập', th:'มีบัญชีอยู่แล้ว? เข้าสู่ระบบ', id:'Sudah punya akun? Masuk' },
+                recover: { zh:'发送找回信息', 'zh-TW':'發送找回資訊', en:'Recover', ja:'再設定メール送信', ko:'복구',
+                    es:'Recuperar', fr:'Récupérer', pt:'Recuperar', ar:'استعادة', de:'Wiederherstellen', ru:'Восстановить', it:'Recupera',
+                    tr:'Kurtar', vi:'Khôi phục', th:'กู้คืน', id:'Pulihkan' },
+                back_to_login: { zh:'返回登录', 'zh-TW':'返回登入', en:'Back to login', ja:'ログインに戻る', ko:'로그인으로 돌아가기',
+                    es:'Volver al inicio de sesión', fr:'Retour à la connexion', pt:'Voltar ao login', ar:'العودة لتسجيل الدخول', de:'Zurück zur Anmeldung', ru:'Вернуться ко входу', it:'Torna al login',
+                    tr:'Girişe dön', vi:'Quay lại đăng nhập', th:'กลับสู่หน้าเข้าสู่ระบบ', id:'Kembali ke login' },
+                cover_photo: { zh:'封面照片', 'zh-TW':'封面照片', en:'Cover Photo', ja:'カバー写真', ko:'커버 사진',
+                    es:'Foto de portada', fr:'Photo de couverture', pt:'Foto de capa', ar:'صورة الغلاف', de:'Titelbild', ru:'Обложка', it:'Foto di copertina',
+                    tr:'Kapak Fotoğrafı', vi:'Ảnh bìa', th:'ภาพปก', id:'Foto Sampul' },
+                avatar: { zh:'头像', 'zh-TW':'頭像', en:'Avatar', ja:'アバター', ko:'아바타',
+                    es:'Avatar', fr:'Avatar', pt:'Avatar', ar:'الصورة الرمزية', de:'Avatar', ru:'Аватар', it:'Avatar',
+                    tr:'Avatar', vi:'Ảnh đại diện', th:'อวาตาร์', id:'Avatar' },
+                bio: { zh:'个人简介', 'zh-TW':'個人簡介', en:'Bio', ja:'自己紹介', ko:'소개',
+                    es:'Biografía', fr:'Bio', pt:'Bio', ar:'نبذة', de:'Bio', ru:'О себе', it:'Bio',
+                    tr:'Biyografi', vi:'Tiểu sử', th:'ประวัติ', id:'Bio' },
+                linked_accounts: { zh:'绑定账号', 'zh-TW':'綁定帳號', en:'Linked Accounts', ja:'連携アカウント', ko:'연결 계정',
+                    es:'Cuentas vinculadas', fr:'Comptes liés', pt:'Contas vinculadas', ar:'حسابات مرتبطة', de:'Verknüpfte Konten', ru:'Привязанные аккаунты', it:'Account collegati',
+                    tr:'Bağlı Hesaplar', vi:'Tài khoản liên kết', th:'บัญชีที่เชื่อมโยง', id:'Akun Tertaut' },
+                wechat: { zh:'微信', 'zh-TW':'微信', en:'WeChat', ja:'WeChat', ko:'위챗',
+                    es:'WeChat', fr:'WeChat', pt:'WeChat', ar:'وي شات', de:'WeChat', ru:'WeChat', it:'WeChat',
+                    tr:'WeChat', vi:'WeChat', th:'วีแชท', id:'WeChat' },
+                qq: { zh:'QQ', 'zh-TW':'QQ', en:'QQ', ja:'QQ', ko:'QQ',
+                    es:'QQ', fr:'QQ', pt:'QQ', ar:'QQ', de:'QQ', ru:'QQ', it:'QQ',
+                    tr:'QQ', vi:'QQ', th:'QQ', id:'QQ' },
+                bind: { zh:'绑定', 'zh-TW':'綁定', en:'Bind', ja:'連携', ko:'연결',
+                    es:'Vincular', fr:'Lier', pt:'Vincular', ar:'ربط', de:'Verbinden', ru:'Привязать', it:'Collega',
+                    tr:'Bağla', vi:'Liên kết', th:'เชื่อมโยง', id:'Hubungkan' },
+                save_changes: { zh:'保存修改', 'zh-TW':'儲存修改', en:'Save Changes', ja:'変更を保存', ko:'변경 저장',
+                    es:'Guardar cambios', fr:'Enregistrer les modifications', pt:'Salvar alterações', ar:'حفظ التغييرات', de:'Änderungen speichern', ru:'Сохранить изменения', it:'Salva modifiche',
+                    tr:'Değişiklikleri Kaydet', vi:'Lưu thay đổi', th:'บันทึกการเปลี่ยนแปลง', id:'Simpan Perubahan' },
+                new_post: { zh:'新文章', 'zh-TW':'新文章', en:'New Post', ja:'新規投稿', ko:'새 게시글',
+                    es:'Nueva publicación', fr:'Nouvel article', pt:'Nova postagem', ar:'مقال جديد', de:'Neuer Beitrag', ru:'Новая статья', it:'Nuovo post',
+                    tr:'Yeni Gönderi', vi:'Bài viết mới', th:'บทความใหม่', id:'Posting Baru' },
+                share_analysis: { zh:'分享你的气象分析', 'zh-TW':'分享你的氣象分析', en:'Share your weather analysis', ja:'気象分析を共有', ko:'기상 분석 공유',
+                    es:'Comparte tu análisis meteorológico', fr:'Partagez votre analyse météo', pt:'Compartilhe sua análise meteorológica', ar:'شارك تحليلك للطقس', de:'Teilen Sie Ihre Wetteranalyse', ru:'Поделитесь своим анализом погоды', it:'Condividi la tua analisi meteo',
+                    tr:'Hava durumu analizinizi paylaşın', vi:'Chia sẻ phân tích thời tiết của bạn', th:'แชร์การวิเคราะห์สภาพอากาศของคุณ', id:'Bagikan analisis cuaca Anda' },
+                insert_media: { zh:'插入图片 / 视频', 'zh-TW':'插入圖片 / 影片', en:'Insert images / videos', ja:'画像/動画を挿入', ko:'이미지/비디오 삽입',
+                    es:'Insertar imágenes / videos', fr:'Insérer des images / vidéos', pt:'Inserir imagens / vídeos', ar:'إدراج صور / فيديو', de:'Bilder / Videos einfügen', ru:'Вставить изображения / видео', it:'Inserisci immagini / video',
+                    tr:'Resim / Video Ekle', vi:'Chèn ảnh / video', th:'แทรกรูปภาพ / วิดีโอ', id:'Sisipkan gambar / video' },
+                admin_panel: { zh:'后台管理', 'zh-TW':'後台管理', en:'Admin Panel', ja:'管理パネル', ko:'관리자 패널',
+                    es:'Panel de administración', fr:'Panneau d\'administration', pt:'Painel de administração', ar:'لوحة الإدارة', de:'Admin-Panel', ru:'Панель администратора', it:'Pannello di amministrazione',
+                    tr:'Yönetici Paneli', vi:'Bảng quản trị', th:'แผงควบคุมผู้ดูแล', id:'Panel Admin' },
+                close: { zh:'关闭', 'zh-TW':'關閉', en:'Close', ja:'閉じる', ko:'닫기',
+                    es:'Cerrar', fr:'Fermer', pt:'Fechar', ar:'إغلاق', de:'Schließen', ru:'Закрыть', it:'Chiudi',
+                    tr:'Kapat', vi:'Đóng', th:'ปิด', id:'Tutup' },
+                comments: { zh:'评论', 'zh-TW':'評論', en:'Comments', ja:'コメント', ko:'댓글',
+                    es:'Comentarios', fr:'Commentaires', pt:'Comentários', ar:'تعليقات', de:'Kommentare', ru:'Комментарии', it:'Commenti',
+                    tr:'Yorumlar', vi:'Bình luận', th:'ความคิดเห็น', id:'Komentar' },
+                post_comment: { zh:'发表评论', 'zh-TW':'發表評論', en:'Post Comment', ja:'コメント投稿', ko:'댓글 작성',
+                    es:'Publicar comentario', fr:'Publier un commentaire', pt:'Publicar comentário', ar:'نشر تعليق', de:'Kommentar posten', ru:'Опубликовать комментарий', it:'Pubblica commento',
+                    tr:'Yorum Yap', vi:'Đăng bình luận', th:'โพสต์ความคิดเห็น', id:'Kirim Komentar' },
+                data: { zh:'数据', 'zh-TW':'資料', en:'Data', ja:'データ', ko:'데이터',
+                    es:'Datos', fr:'Données', pt:'Dados', ar:'بيانات', de:'Daten', ru:'Данные', it:'Dati',
+                    tr:'Veri', vi:'Dữ liệu', th:'ข้อมูล', id:'Data' },
+                cancel: { zh:'取消', 'zh-TW':'取消', en:'Cancel', ja:'キャンセル', ko:'취소',
+                    es:'Cancelar', fr:'Annuler', pt:'Cancelar', ar:'إلغاء', de:'Abbrechen', ru:'Отмена', it:'Annulla',
+                    tr:'İptal', vi:'Hủy', th:'ยกเลิก', id:'Batal' },
+                select_agency: { zh:'选择数据源机构', 'zh-TW':'選擇資料源機構', en:'Select Data Source', ja:'データソース選択', ko:'데이터 소스 선택',
+                    es:'Seleccionar fuente de datos', fr:'Sélectionner la source de données', pt:'Selecionar fonte de dados', ar:'اختر مصدر البيانات', de:'Datenquelle auswählen', ru:'Выберите источник данных', it:'Seleziona fonte dati',
+                    tr:'Veri Kaynağı Seç', vi:'Chọn nguồn dữ liệu', th:'เลือกแหล่งข้อมูล', id:'Pilih Sumber Data' },
+                copyright: { zh:'Copyright © 2026 ZIY Inc. 保留所有权利.', 'zh-TW':'Copyright © 2026 ZIY Inc. 保留所有權利.', en:'Copyright © 2026 ZIY Inc. All rights reserved.', ja:'Copyright © 2026 ZIY Inc. All rights reserved.', ko:'Copyright © 2026 ZIY Inc. All rights reserved.',
+                    es:'Copyright © 2026 ZIY Inc. Todos los derechos reservados.', fr:'Copyright © 2026 ZIY Inc. Tous droits réservés.', pt:'Copyright © 2026 ZIY Inc. Todos os direitos reservados.', ar:'جميع الحقوق محفوظة © 2026 ZIY Inc.', de:'Copyright © 2026 ZIY Inc. Alle Rechte vorbehalten.', ru:'Copyright © 2026 ZIY Inc. Все права защищены.', it:'Copyright © 2026 ZIY Inc. Tutti i diritti riservati.',
+                    tr:'Telif Hakkı © 2026 ZIY Inc. Tüm hakları saklıdır.', vi:'Bản quyền © 2026 ZIY Inc. Đã đăng ký bản quyền.', th:'ลิขสิทธิ์ © 2026 ZIY Inc. สงวนลิขสิทธิ์', id:'Hak Cipta © 2026 ZIY Inc. Seluruh hak cipta dilindungi.' },
+                typhoon_title: { zh:'台风监测', 'zh-TW':'颱風監測', en:'Typhoon', ja:'台風監視', ko:'태풍 감시',
+                    es:'Monitoreo de Tifones', fr:'Surveillance des Typhons', pt:'Monitoramento de Tufões', ar:'مراقبة الأعاصير', de:'Taifun-Überwachung', ru:'Мониторинг тайфунов', it:'Monitoraggio Tifoni',
+                    tr:'Tayfun İzleme', vi:'Giám sát Bão', th:'การติดตามพายุไต้ฝุ่น', id:'Pemantauan Topan' },
+                typhoon_sub: { zh:'轨迹 · 强度 · 风场', 'zh-TW':'軌跡 · 強度 · 風場', en:'Track · Intensity · Wind', ja:'経路 · 強度 · 風場', ko:'경로 · 강도 · 바람장',
+                    es:'Trayectoria · Intensidad · Viento', fr:'Trajectoire · Intensité · Vent', pt:'Trajetória · Intensidade · Vento', ar:'المسار · الشدة · الرياح', de:'Zugbahn · Intensität · Wind', ru:'Траектория · Интенсивность · Ветер', it:'Traiettoria · Intensità · Vento',
+                    tr:'Yol · Yoğunluk · Rüzgar', vi:'Đường đi · Cường độ · Gió', th:'เส้นทาง · ความรุนแรง · ลม', id:'Jalur · Intensitas · Angin' },
+                satellite_title: { zh:'卫星云图', 'zh-TW':'衛星雲圖', en:'Satellite', ja:'衛星画像', ko:'위성 영상',
+                    es:'Imagen Satelital', fr:'Imagerie Satellitaire', pt:'Imagem de Satélite', ar:'صورة القمر الصناعي', de:'Satellitenbild', ru:'Спутниковый снимок', it:'Immagine Satellitare',
+                    tr:'Uydu Görüntüsü', vi:'Ảnh Vệ tinh', th:'ภาพถ่ายดาวเทียม', id:'Citra Satelit' },
+                satellite_sub: { zh:'多通道 · 实时 · 全球', 'zh-TW':'多通道 · 即時 · 全球', en:'Multi‑band · Live · Global', ja:'マルチバンド · リアルタイム · 全球', ko:'다중 채널 · 실시간 · 글로벌',
+                    es:'Multibanda · En vivo · Global', fr:'Multibande · Direct · Mondial', pt:'Multibanda · Ao vivo · Global', ar:'متعدد النطاقات · مباشر · عالمي', de:'Mehrband · Live · Global', ru:'Мультидиапазон · В реальном времени · Глобальный', it:'Multibanda · In diretta · Globale',
+                    tr:'Çok Bantlı · Canlı · Küresel', vi:'Đa băng tần · Trực tiếp · Toàn cầu', th:'หลายแบนด์ · สด · ทั่วโลก', id:'Multi-band · Langsung · Global' },
+                model_title: { zh:'数值预报', 'zh-TW':'數值預報', en:'Forecast', ja:'数値予報', ko:'수치 예보',
+                    es:'Pronóstico Numérico', fr:'Prévision Numérique', pt:'Previsão Numérica', ar:'التنبؤ العددي', de:'Numerische Vorhersage', ru:'Численный прогноз', it:'Previsione Numerica',
+                    tr:'Sayısal Tahmin', vi:'Dự báo Số trị', th:'พยากรณ์เชิงตัวเลข', id:'Prakiraan Numerik' },
+                model_sub: { zh:'全球模式 · 集合 · 预警', 'zh-TW':'全球模式 · 集合 · 預警', en:'Global · Ensemble · Alert', ja:'全球 · アンサンブル · 警報', ko:'글로벌 · 앙상블 · 경보',
+                    es:'Global · Conjunto · Alerta', fr:'Global · Ensemble · Alerte', pt:'Global · Conjunto · Alerta', ar:'عالمي · مجموعة · إنذار', de:'Global · Ensemble · Alarm', ru:'Глобальный · Ансамбль · Предупреждение', it:'Globale · Ensemble · Allerta',
+                    tr:'Küresel · Topluluk · Uyarı', vi:'Toàn cầu · Tổ hợp · Cảnh báo', th:'ทั่วโลก · ชุดรวม · การแจ้งเตือน', id:'Global · Ensemble · Peringatan' },
+                env_title: { zh:'环境场', 'zh-TW':'環境場', en:'Environment', ja:'環境場', ko:'환경장',
+                    es:'Campo Ambiental', fr:'Champ Environnemental', pt:'Campo Ambiental', ar:'المجال البيئي', de:'Umgebungsfeld', ru:'Поле окружающей среды', it:'Campo Ambientale',
+                    tr:'Çevre Alanı', vi:'Trường Môi trường', th:'สนามสิ่งแวดล้อม', id:'Medan Lingkungan' },
+                env_sub: { zh:'风切变 · 海温 · 湿度', 'zh-TW':'風切變 · 海溫 · 濕度', en:'Shear · SST · Humidity', ja:'シアー · 海面水温 · 湿度', ko:'시어 · 해수온 · 습도',
+                    es:'Cizalladura · TSM · Humedad', fr:'Cisaillement · SST · Humidité', pt:'Cisalhamento · TSM · Umidade', ar:'قص · درجة حرارة سطح البحر · رطوبة', de:'Scherung · SST · Feuchte', ru:'Сдвиг · ТПО · Влажность', it:'Shear · SST · Umidità',
+                    tr:'Makaslama · SST · Nem', vi:'Đứt gió · SST · Độ ẩm', th:'แรงเฉือน · SST · ความชื้น', id:'Geser · SST · Kelembaban' },
+                history_title: { zh:'历史档案', 'zh-TW':'歷史檔案', en:'Archive', ja:'アーカイブ', ko:'아카이브',
+                    es:'Archivo Histórico', fr:'Archives Historiques', pt:'Arquivo Histórico', ar:'الأرشيف التاريخي', de:'Historisches Archiv', ru:'Исторический архив', it:'Archivio Storico',
+                    tr:'Tarihsel Arşiv', vi:'Lưu trữ Lịch sử', th:'คลังประวัติ', id:'Arsip Historis' },
+                history_sub: { zh:'完整生命周期', 'zh-TW':'完整生命週期', en:'Full life cycle', ja:'全ライフサイクル', ko:'전 생애 주기',
+                    es:'Ciclo de vida completo', fr:'Cycle de vie complet', pt:'Ciclo de vida completo', ar:'دورة حياة كاملة', de:'Voller Lebenszyklus', ru:'Полный жизненный цикл', it:'Ciclo di vita completo',
+                    tr:'Tam Yaşam Döngüsü', vi:'Vòng đời đầy đủ', th:'วงจรชีวิตเต็มรูปแบบ', id:'Siklus Hidup Lengkap' },
+                community_title: { zh:'气象社区', 'zh-TW':'氣象社群', en:'Community', ja:'気象コミュニティ', ko:'기상 커뮤니티',
+                    es:'Comunidad Meteorológica', fr:'Communauté Météo', pt:'Comunidade Meteorológica', ar:'مجتمع الطقس', de:'Wetter-Community', ru:'Метеосообщество', it:'Comunità Meteo',
+                    tr:'Hava Durumu Topluluğu', vi:'Cộng đồng Thời tiết', th:'ชุมชนสภาพอากาศ', id:'Komunitas Cuaca' },
+                community_sub: { zh:'发布文章 · 图片视频', 'zh-TW':'發布文章 · 圖片影片', en:'Post · Photos · Videos', ja:'投稿 · 写真 · 動画', ko:'게시글 · 사진 · 비디오',
+                    es:'Publicaciones · Fotos · Videos', fr:'Articles · Photos · Vidéos', pt:'Postagens · Fotos · Vídeos', ar:'مقالات · صور · فيديو', de:'Beiträge · Fotos · Videos', ru:'Статьи · Фото · Видео', it:'Post · Foto · Video',
+                    tr:'Gönderiler · Fotoğraflar · Videolar', vi:'Bài viết · Ảnh · Video', th:'บทความ · รูปภาพ · วิดีโอ', id:'Posting · Foto · Video' },
+                login_greeting: { zh:'登录 ZIY', 'zh-TW':'登入 ZIY', en:'Login ZIY', ja:'ZIYにログイン', ko:'ZIY 로그인',
+                    es:'Iniciar sesión en ZIY', fr:'Connexion ZIY', pt:'Entrar no ZIY', ar:'تسجيل الدخول إلى ZIY', de:'ZIY Anmeldung', ru:'Войти в ZIY', it:'Accedi a ZIY',
+                    tr:'ZIY Giriş', vi:'Đăng nhập ZIY', th:'เข้าสู่ระบบ ZIY', id:'Masuk ZIY' },
+                login_sub: { zh:'使用您的账户', 'zh-TW':'使用您的帳戶', en:'Use your account', ja:'アカウントを使用', ko:'계정 사용',
+                    es:'Usa tu cuenta', fr:'Utilisez votre compte', pt:'Use sua conta', ar:'استخدم حسابك', de:'Nutzen Sie Ihr Konto', ru:'Используйте свой аккаунт', it:'Usa il tuo account',
+                    tr:'Hesabınızı kullanın', vi:'Sử dụng tài khoản của bạn', th:'ใช้บัญชีของคุณ', id:'Gunakan akun Anda' },
+                account_label: { zh:'账号', 'zh-TW':'帳號', en:'Account', ja:'アカウント', ko:'계정',
+                    es:'Cuenta', fr:'Compte', pt:'Conta', ar:'الحساب', de:'Konto', ru:'Аккаунт', it:'Account',
+                    tr:'Hesap', vi:'Tài khoản', th:'บัญชี', id:'Akun' },
+                username_placeholder: { zh:'用户名 / 邮箱', 'zh-TW':'使用者名稱 / 電子郵件', en:'Username / Email', ja:'ユーザー名 / メール', ko:'사용자명 / 이메일',
+                    es:'Usuario / Correo', fr:'Nom d\'utilisateur / Email', pt:'Usuário / Email', ar:'اسم المستخدم / البريد الإلكتروني', de:'Benutzername / E-Mail', ru:'Имя пользователя / Email', it:'Nome utente / Email',
+                    tr:'Kullanıcı Adı / E-posta', vi:'Tên người dùng / Email', th:'ชื่อผู้ใช้ / อีเมล', id:'Nama Pengguna / Email' },
+                password_placeholder: { zh:'密码', 'zh-TW':'密碼', en:'Password', ja:'パスワード', ko:'비밀번호',
+                    es:'Contraseña', fr:'Mot de passe', pt:'Senha', ar:'كلمة المرور', de:'Passwort', ru:'Пароль', it:'Password',
+                    tr:'Şifre', vi:'Mật khẩu', th:'รหัสผ่าน', id:'Kata Sandi' },
+                register_title: { zh:'注册', 'zh-TW':'註冊', en:'Register', ja:'登録', ko:'가입',
+                    es:'Registro', fr:'Inscription', pt:'Cadastro', ar:'تسجيل', de:'Registrierung', ru:'Регистрация', it:'Registrazione',
+                    tr:'Kayıt', vi:'Đăng ký', th:'ลงทะเบียน', id:'Pendaftaran' },
+                email_placeholder: { zh:'邮箱', 'zh-TW':'電子郵件', en:'Email', ja:'メールアドレス', ko:'이메일',
+                    es:'Correo electrónico', fr:'Email', pt:'Email', ar:'البريد الإلكتروني', de:'E-Mail', ru:'Email', it:'Email',
+                    tr:'E-posta', vi:'Email', th:'อีเมล', id:'Email' },
+                confirm_password_placeholder: { zh:'确认密码', 'zh-TW':'確認密碼', en:'Confirm Password', ja:'パスワード確認', ko:'비밀번호 확인',
+                    es:'Confirmar contraseña', fr:'Confirmer le mot de passe', pt:'Confirmar senha', ar:'تأكيد كلمة المرور', de:'Passwort bestätigen', ru:'Подтвердите пароль', it:'Conferma password',
+                    tr:'Şifreyi Onayla', vi:'Xác nhận mật khẩu', th:'ยืนยันรหัสผ่าน', id:'Konfirmasi Kata Sandi' },
+                register_btn: { zh:'注册', 'zh-TW':'註冊', en:'Register', ja:'登録', ko:'가입',
+                    es:'Registrarse', fr:'S\'inscrire', pt:'Cadastrar', ar:'تسجيل', de:'Registrieren', ru:'Зарегистрироваться', it:'Registrati',
+                    tr:'Kaydol', vi:'Đăng ký', th:'ลงทะเบียน', id:'Daftar' },
+                forgot_title: { zh:'找回账号', 'zh-TW':'找回帳號', en:'Recover Account', ja:'アカウント復旧', ko:'계정 복구',
+                    es:'Recuperar cuenta', fr:'Récupérer le compte', pt:'Recuperar conta', ar:'استعادة الحساب', de:'Konto wiederherstellen', ru:'Восстановить аккаунт', it:'Recupera account',
+                    tr:'Hesap Kurtarma', vi:'Khôi phục tài khoản', th:'กู้คืนบัญชี', id:'Pulihkan Akun' },
+                profile_title: { zh:'个人资料', 'zh-TW':'個人資料', en:'Profile', ja:'プロフィール', ko:'프로필',
+                    es:'Perfil', fr:'Profil', pt:'Perfil', ar:'الملف الشخصي', de:'Profil', ru:'Профиль', it:'Profilo',
+                    tr:'Profil', vi:'Hồ sơ', th:'โปรไฟล์', id:'Profil' },
+                avatar_label: { zh:'头像', 'zh-TW':'頭像', en:'Avatar', ja:'アバター', ko:'아바타',
+                    es:'Avatar', fr:'Avatar', pt:'Avatar', ar:'الصورة الرمزية', de:'Avatar', ru:'Аватар', it:'Avatar',
+                    tr:'Avatar', vi:'Ảnh đại diện', th:'อวาตาร์', id:'Avatar' },
+                bio_placeholder: { zh:'写一点关于自己的介绍...', 'zh-TW':'寫一點關於自己的介紹...', en:'Write a short bio...', ja:'自己紹介を入力...', ko:'자기소개 입력...',
+                    es:'Escribe una breve biografía...', fr:'Écrivez une courte bio...', pt:'Escreva uma breve biografia...', ar:'اكتب نبذة قصيرة...', de:'Schreiben Sie eine kurze Bio...', ru:'Напишите краткую биографию...', it:'Scrivi una breve bio...',
+                    tr:'Kısa bir biyografi yazın...', vi:'Viết một đoạn tiểu sử ngắn...', th:'เขียนประวัติย่อ...', id:'Tulis bio singkat...' },
+                post_title_placeholder: { zh:'标题', 'zh-TW':'標題', en:'Title', ja:'タイトル', ko:'제목',
+                    es:'Título', fr:'Titre', pt:'Título', ar:'العنوان', de:'Titel', ru:'Заголовок', it:'Titolo',
+                    tr:'Başlık', vi:'Tiêu đề', th:'ชื่อเรื่อง', id:'Judul' },
+                post_content_placeholder: { zh:'正文内容', 'zh-TW':'正文內容', en:'Content', ja:'本文', ko:'내용',
+                    es:'Contenido', fr:'Contenu', pt:'Conteúdo', ar:'المحتوى', de:'Inhalt', ru:'Содержание', it:'Contenuto',
+                    tr:'İçerik', vi:'Nội dung', th:'เนื้อหา', id:'Konten' },
+                comment_placeholder: { zh:'写下你的评论...', 'zh-TW':'寫下你的評論...', en:'Write a comment...', ja:'コメントを入力...', ko:'댓글 입력...',
+                    es:'Escribe un comentario...', fr:'Écrivez un commentaire...', pt:'Escreva um comentário...', ar:'اكتب تعليقًا...', de:'Schreiben Sie einen Kommentar...', ru:'Напишите комментарий...', it:'Scrivi un commento...',
+                    tr:'Bir yorum yazın...', vi:'Viết bình luận...', th:'เขียนความคิดเห็น...', id:'Tulis komentar...' },
+                hot_recommend: { zh:'热门推荐', 'zh-TW':'熱門推薦', en:'Hot Recommendations', ja:'おすすめ', ko:'추천',
+                    es:'Recomendaciones', fr:'Recommandations', pt:'Recomendados', ar:'موصى به', de:'Empfehlungen', ru:'Рекомендации', it:'Consigliati',
+                    tr:'Önerilenler', vi:'Đề xuất', th:'แนะนำ', id:'Rekomendasi' },
+                hot_tags: { zh:'热门标签', 'zh-TW':'熱門標籤', en:'Hot Tags', ja:'人気タグ', ko:'인기 태그',
+                    es:'Etiquetas populares', fr:'Tags populaires', pt:'Tags populares', ar:'وسوم شائعة', de:'Beliebte Tags', ru:'Популярные теги', it:'Tag popolari',
+                    tr:'Popüler Etiketler', vi:'Thẻ phổ biến', th:'แท็กยอดนิยม', id:'Tag Populer' },
+                search_results: { zh:'搜索结果', 'zh-TW':'搜尋結果', en:'Search Results', ja:'検索結果', ko:'검색 결과',
+                    es:'Resultados', fr:'Résultats', pt:'Resultados', ar:'نتائج البحث', de:'Suchergebnisse', ru:'Результаты поиска', it:'Risultati',
+                    tr:'Arama Sonuçları', vi:'Kết quả tìm kiếm', th:'ผลการค้นหา', id:'Hasil Pencarian' },
+                no_results: { zh:'没有找到相关文章', 'zh-TW':'沒有找到相關文章', en:'No results found', ja:'記事が見つかりません', ko:'게시글을 찾을 수 없습니다',
+                    es:'No se encontraron artículos', fr:'Aucun article trouvé', pt:'Nenhum artigo encontrado', ar:'لم يتم العثور على مقالات', de:'Keine Artikel gefunden', ru:'Статьи не найдены', it:'Nessun articolo trovato',
+                    tr:'Makale bulunamadı', vi:'Không tìm thấy bài viết', th:'ไม่พบบทความ', id:'Artikel tidak ditemukan' },
+                search_placeholder: { zh:'搜索', 'zh-TW':'搜尋', en:'Search', ja:'検索', ko:'검색',
+                    es:'Buscar', fr:'Rechercher', pt:'Buscar', ar:'بحث', de:'Suchen', ru:'Поиск', it:'Cerca',
+                    tr:'Ara', vi:'Tìm kiếm', th:'ค้นหา', id:'Cari' },
+                drag_hint: { zh:'拖动缩放', 'zh-TW':'拖曳縮放', en:'Drag to zoom', ja:'ドラッグでズーム', ko:'드래그하여 확대',
+                    es:'Arrastrar para zoom', fr:'Faites glisser pour zoomer', pt:'Arraste para ampliar', ar:'اسحب للتكبير', de:'Zum Zoomen ziehen', ru:'Перетащите для масштабирования', it:'Trascina per zoomare',
+                    tr:'Yakınlaştırmak için sürükleyin', vi:'Kéo để thu phóng', th:'ลากเพื่อซูม', id:'Seret untuk memperbesar' },
+                agree_privacy: { zh:'我已阅读并同意', 'zh-TW':'我已閱讀並同意', en:'I agree to the', ja:'以下に同意します', ko:'동의합니다',
+                    es:'Acepto la', fr:'J\'accepte la', pt:'Aceito a', ar:'أوافق على', de:'Ich stimme den', ru:'Я согласен с', it:'Accetto la',
+                    tr:'Kabul ediyorum:', vi:'Tôi đồng ý với', th:'ฉันยอมรับ', id:'Saya menyetujui' },
+                agree_legal: { zh:'我已阅读并同意', 'zh-TW':'我已閱讀並同意', en:'I agree to the', ja:'以下に同意します', ko:'동의합니다',
+                    es:'Acepto la', fr:'J\'accepte les', pt:'Aceito as', ar:'أوافق على', de:'Ich stimme den', ru:'Я согласен с', it:'Accetto le',
+                    tr:'Kabul ediyorum:', vi:'Tôi đồng ý với', th:'ฉันยอมรับ', id:'Saya menyetujui' }
             };
             document.querySelectorAll('[data-i18n]').forEach(el=>{ 
                 const key=el.getAttribute('data-i18n'); 
@@ -1500,14 +2160,13 @@ R3440 R5055 R6030 R6440</pre>
                 if(i18nMap[key] && i18nMap[key][lang]) el.placeholder = i18nMap[key][lang];
             });
             
-            // 显式更新协议文本，确保切换语言时正确
             document.querySelectorAll('[data-i18n="agree_terms"]').forEach(el => el.innerText = i18nMap.agree_terms[lang]);
             document.querySelectorAll('[data-i18n="agree_privacy"]').forEach(el => el.innerText = i18nMap.agree_privacy[lang]);
             document.querySelectorAll('[data-i18n="agree_legal"]').forEach(el => el.innerText = i18nMap.agree_legal[lang]);
             
             renderPosts();
             const agencyTitle = document.querySelector('#actionSheet .title');
-            if(agencyTitle) agencyTitle.innerText = { zh:'选择数据源机构', en:'Select Data Source', ja:'データソース選択', ko:'데이터 소스 선택' }[lang] || 'Select Data Source';
+            if(agencyTitle) agencyTitle.innerText = i18nMap.select_agency[lang] || 'Select Data Source';
             
             if (document.getElementById('aboutModal').classList.contains('show')) {
                 showAbout();
@@ -1519,7 +2178,6 @@ R3440 R5055 R6030 R6440</pre>
             }
         }
         
-        // 下拉菜单交互
         langToggleBtn.addEventListener('click', (e) => {
             e.stopPropagation();
             langDropdown.classList.toggle('active');
@@ -1538,7 +2196,6 @@ R3440 R5055 R6030 R6440</pre>
             });
         });
         
-        // 初始化语言为中文
         setLanguage('zh');
 
         renderDefaultSearchContent();
